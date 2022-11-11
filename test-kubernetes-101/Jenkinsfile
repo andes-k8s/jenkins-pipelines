@@ -22,8 +22,8 @@ pipeline {
           print "docker build -f api/Dockerfile -t ${API_IMAGE_NAME}:${BRANCH}-${HASH} -t ${API_IMAGE_NAME}:${BRANCH} ./api"
           print "-------------------------------------"
 
-          sh "docker build -f api/Dockerfile -t ${API_IMAGE_NAME}:${BRANCH}-${HASH} -t ${API_IMAGE_NAME}:${GIT_BRANCH} ./api"
-          sh "docker build -f app/Dockerfile -t ${APP_IMAGE_NAME}:${BRANCH}-${HASH} -t ${APP_IMAGE_NAME}:${GIT_BRANCH} ./app"
+          sh "docker build -f api/Dockerfile -t ${API_IMAGE_NAME}:${BRANCH}-${HASH} -t ${API_IMAGE_NAME}:${BRANCH} ./api"
+          sh "docker build -f app/Dockerfile -t ${APP_IMAGE_NAME}:${BRANCH}-${HASH} -t ${APP_IMAGE_NAME}:${BRANCH} ./app"
         }
         script {
           docker.withRegistry('', registryCredential ) {
