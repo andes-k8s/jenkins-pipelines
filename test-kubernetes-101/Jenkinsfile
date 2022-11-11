@@ -17,6 +17,8 @@ pipeline {
           print "----------------------------------"
           print checkoutResponse
           print "----------------------------------"
+          print checkoutResponse.GIT_COMMIT
+          print "----------------------------------"
           HASH = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
           sh 'docker build -f api/Dockerfile -t ${API_IMAGE_NAME}:${GIT_BRANCH}-${HASH} -t ${API_IMAGE_NAME}:${GIT_BRANCH} ./api'
           sh 'docker build -f app/Dockerfile -t ${APP_IMAGE_NAME}:${GIT_BRANCH}-${HASH} -t ${APP_IMAGE_NAME}:${GIT_BRANCH} ./app'
