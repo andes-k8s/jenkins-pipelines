@@ -2,6 +2,8 @@ podTemplate(containers: [
     containerTemplate(
         name: 'docker', 
         image: 'docker:19.03.1'
+        command: 'sleep', 
+        args: '30d'
     )
   ]) {
   node(POD_LABEL) {
