@@ -26,8 +26,6 @@ pipeline {
           def appImage = docker.build("${APP_IMAGE_NAME}:${BRANCH}-${HASH}", "./app")
           def appImage2 = docker.build("${APP_IMAGE_NAME}:${BRANCH}", "./app")
 
-          //sh "docker build -f api/Dockerfile -t ${API_IMAGE_NAME}:${BRANCH}-${HASH} -t ${API_IMAGE_NAME}:${BRANCH} ./api"
-          //sh "docker build -f app/Dockerfile -t ${APP_IMAGE_NAME}:${BRANCH}-${HASH} -t ${APP_IMAGE_NAME}:${BRANCH} ./app"
         }
         script {
           docker.withRegistry('', registryCredential ) {
