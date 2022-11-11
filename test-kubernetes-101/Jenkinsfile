@@ -12,10 +12,12 @@ pipeline {
   stages {
     stage('Build API') {
       steps {
-        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/hospitalneuquen/turnero-core.git']]])
-        HASH = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-        sh 'docker build -f api/Dockerfile -t ${API_IMAGE_NAME}:${GIT_BRANCH}-${HASH} -t ${API_IMAGE_NAME}:${GIT_BRANCH} ./api'
-        sh 'docker build -f app/Dockerfile -t ${APP_IMAGE_NAME}:${GIT_BRANCH}-${HASH} -t ${APP_IMAGE_NAME}:${GIT_BRANCH} ./app'
+        script {
+          checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/hospitalneuquen/turnero-core.git']]])
+          HASH = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+          sh 'docker build -f api/Dockerfile -t ${API_IMAGE_NAME}:${GIT_BRANCH}-${HASH} -t ${API_IMAGE_NAME}:${GIT_BRANCH} ./api'
+          sh 'docker build -f app/Dockerfile -t ${APP_IMAGE_NAME}:${GIT_BRANCH}-${HASH} -t ${APP_IMAGE_NAME}:${GIT_BRANCH} ./app'
+        }
         script {
           docker.withRegistry('', registryCredential ) {
             dockerAPI = docker.image("${API_IMAGE_NAME}:${GIT_BRANCH}")
