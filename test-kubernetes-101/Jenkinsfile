@@ -9,9 +9,9 @@ podTemplate(containers: [
   node(POD_LABEL) {
     stage('Build') {
       git 'https://github.com/hospitalneuquen/turnero-core.git'
+      HASH = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
       container('docker') {
-        stage('A') {
-          HASH = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+        stage('Build API') {
           sh 'docker build -f api/Dockerfile -t ${API_IMAGE_NAME}:${GIT_BRANCH}-${HASH} -t ${API_IMAGE_NAME}:${GIT_BRANCH} ./api'
           sh 'docker build -f app/Dockerfile -t ${APP_IMAGE_NAME}:${GIT_BRANCH}-${HASH} -t ${APP_IMAGE_NAME}:${GIT_BRANCH} ./app'
           script {
