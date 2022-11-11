@@ -1,8 +1,8 @@
 podTemplate(containers: [
     containerTemplate(
         name: 'docker', 
-        image: 'docker:19.03.1', 
-        args: '30d')
+        image: 'docker:19.03.1'
+    )
   ]) {
   node(POD_LABEL) {
     stage('Build') {
