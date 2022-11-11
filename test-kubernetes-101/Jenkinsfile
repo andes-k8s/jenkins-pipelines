@@ -14,14 +14,16 @@ pipeline {
       steps {
         script {
           def checkoutResponse = checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/hospitalneuquen/turnero-core.git']]])
+          def BRANCH = GIT_BRANCH.replaceAll("origin/", "")
           def HASH = checkoutResponse.GIT_COMMIT
           print "-------------------------------------"
           print HASH
           print "-------------------------------------"
-          print "docker build -f api/Dockerfile -t ${API_IMAGE_NAME}:${GIT_BRANCH}-${HASH} -t ${API_IMAGE_NAME}:${GIT_BRANCH} ./api"
+          print "docker build -f api/Dockerfile -t ${API_IMAGE_NAME}:${BRANCH}-${HASH} -t ${API_IMAGE_NAME}:${BRANCH} ./api"
           print "-------------------------------------"
-          sh "docker build -f api/Dockerfile -t ${API_IMAGE_NAME}:${GIT_BRANCH}-${HASH} -t ${API_IMAGE_NAME}:${GIT_BRANCH} ./api"
-          sh "docker build -f app/Dockerfile -t ${APP_IMAGE_NAME}:${GIT_BRANCH}-${HASH} -t ${APP_IMAGE_NAME}:${GIT_BRANCH} ./app"
+
+          sh "docker build -f api/Dockerfile -t ${API_IMAGE_NAME}:${BRANCH}-${HASH} -t ${API_IMAGE_NAME}:${GIT_BRANCH} ./api"
+          sh "docker build -f app/Dockerfile -t ${APP_IMAGE_NAME}:${BRANCH}-${HASH} -t ${APP_IMAGE_NAME}:${GIT_BRANCH} ./app"
         }
         script {
           docker.withRegistry('', registryCredential ) {
