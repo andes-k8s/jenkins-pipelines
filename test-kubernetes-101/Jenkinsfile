@@ -1,12 +1,10 @@
-pipeline {
-  environment {
-    registryCredential = "dockerhub"
-  }
-  agent {
-    kubernetes {
-      image: "docker:19.03.1"
-    }
-  }
+podTemplate(containers: [
+    containerTemplate(
+        name: 'docker', 
+        image: 'docker:19.03.1', 
+        args: '30d')
+  ]) {
+
   podTemplate {
     stage('Cloning Git') {
       steps {
