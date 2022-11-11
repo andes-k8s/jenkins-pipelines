@@ -10,38 +10,20 @@ pipeline {
     }
   }
   stages {
-
-  }
-}
-
-
-podTemplate(containers: [
-    containerTemplate(
-        name: 'docker', 
-        image: 'docker:19.03.1',
-        command: 'sleep', 
-        args: '30d'
-    )
-  ]) {
-  node(POD_LABEL) {
-    stage('Build') {
-      container('docker') {
-        stage('Build API') {
-          checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/hospitalneuquen/turnero-core.git']]])
-          HASH = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-          sh 'docker build -f api/Dockerfile -t ${API_IMAGE_NAME}:${GIT_BRANCH}-${HASH} -t ${API_IMAGE_NAME}:${GIT_BRANCH} ./api'
-          sh 'docker build -f app/Dockerfile -t ${APP_IMAGE_NAME}:${GIT_BRANCH}-${HASH} -t ${APP_IMAGE_NAME}:${GIT_BRANCH} ./app'
-          script {
-            docker.withRegistry('', registryCredential ) {
-              dockerAPI = docker.image("${API_IMAGE_NAME}:${GIT_BRANCH}")
-              dockerAPI.push()
-              dockerAPP = docker.image("${APP_IMAGE_NAME}:${GIT_BRANCH}")
-              dockerAPP.push()
-            }
-          }
+    stage('Build API') {
+      checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/hospitalneuquen/turnero-core.git']]])
+      HASH = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+      sh 'docker build -f api/Dockerfile -t ${API_IMAGE_NAME}:${GIT_BRANCH}-${HASH} -t ${API_IMAGE_NAME}:${GIT_BRANCH} ./api'
+      sh 'docker build -f app/Dockerfile -t ${APP_IMAGE_NAME}:${GIT_BRANCH}-${HASH} -t ${APP_IMAGE_NAME}:${GIT_BRANCH} ./app'
+      script {
+        docker.withRegistry('', registryCredential ) {
+          dockerAPI = docker.image("${API_IMAGE_NAME}:${GIT_BRANCH}")
+          dockerAPI.push()
+          dockerAPP = docker.image("${APP_IMAGE_NAME}:${GIT_BRANCH}")
+          dockerAPP.push()
         }
-
       }
     }
   }
 }
+
