@@ -1,0 +1,48 @@
+pipeline {
+  environment {
+    registryCredential = "dockerhub"
+  }
+  agent {
+    kubernetes {
+      image: "docker:19.03.1"
+    }
+  }
+  podTemplate {
+    stages {
+      stage('Cloning Git') {
+        steps {
+          git (
+              url: 'https://github.com/hospitalneuquen/turnero-core.git',
+              branch: '${GIT_BRANCH}'
+          )
+        }
+      }
+      stage('Building image') {
+        environment {
+          HASH = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+        }
+        when {
+          expression {
+              HASH =  sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+              SCRIPT = 'docker images -q ${IMAGE_NAME}:${GIT_BRANCH}-' + HASH  
+              IMAGE_ID = sh(returnStdout: true, script: SCRIPT).trim()
+              return IMAGE_ID == ""  
+           }
+        }
+        steps{
+            sh 'git merge origin/master --no-edit'
+            sh 'docker build -f api/Dockerfile -t ${API_IMAGE_NAME}:${GIT_BRANCH}-${HASH} -t ${API_IMAGE_NAME}:${GIT_BRANCH} ./api'
+            sh 'docker build -f app/Dockerfile -t ${APP_IMAGE_NAME}:${GIT_BRANCH}-${HASH} -t ${APP_IMAGE_NAME}:${GIT_BRANCH} ./app'
+            script {
+                  docker.withRegistry('', registryCredential ) {
+                      dockerAPI = docker.image("${API_IMAGE_NAME}:${GIT_BRANCH}")
+                      dockerAPI.push()
+                      dockerAPP = docker.image("${APP_IMAGE_NAME}:${GIT_BRANCH}")
+                      dockerAPP.push()
+                  }
+            }
+        }
+      }
+    }
+  }
+}
