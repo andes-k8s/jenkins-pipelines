@@ -4,42 +4,25 @@ podTemplate(containers: [
         image: 'docker:19.03.1', 
         args: '30d')
   ]) {
-
-  podTemplate {
-    container('docker') {
-      stage('Cloning Git') {
-        steps {
-          git (
-              url: 'https://github.com/hospitalneuquen/turnero-core.git',
-              branch: '${GIT_BRANCH}'
-          )
-        }
-      }
-      stage('Building image') {
-        environment {
+  node(POD_LABEL) {
+    stage('Build') {
+      git 'https://github.com/hospitalneuquen/turnero-core.git'
+      container('docker') {
+        stage('A') {
           HASH = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-        }
-        when {
-          expression {
-              HASH =  sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-              SCRIPT = 'docker images -q ${IMAGE_NAME}:${GIT_BRANCH}-' + HASH  
-              IMAGE_ID = sh(returnStdout: true, script: SCRIPT).trim()
-              return IMAGE_ID == ""  
-           }
-        }
-        steps{
-            sh 'git merge origin/master --no-edit'
-            sh 'docker build -f api/Dockerfile -t ${API_IMAGE_NAME}:${GIT_BRANCH}-${HASH} -t ${API_IMAGE_NAME}:${GIT_BRANCH} ./api'
-            sh 'docker build -f app/Dockerfile -t ${APP_IMAGE_NAME}:${GIT_BRANCH}-${HASH} -t ${APP_IMAGE_NAME}:${GIT_BRANCH} ./app'
-            script {
-                  docker.withRegistry('', registryCredential ) {
-                      dockerAPI = docker.image("${API_IMAGE_NAME}:${GIT_BRANCH}")
-                      dockerAPI.push()
-                      dockerAPP = docker.image("${APP_IMAGE_NAME}:${GIT_BRANCH}")
-                      dockerAPP.push()
-                  }
+          sh 'git merge origin/master --no-edit'
+          sh 'docker build -f api/Dockerfile -t ${API_IMAGE_NAME}:${GIT_BRANCH}-${HASH} -t ${API_IMAGE_NAME}:${GIT_BRANCH} ./api'
+          sh 'docker build -f app/Dockerfile -t ${APP_IMAGE_NAME}:${GIT_BRANCH}-${HASH} -t ${APP_IMAGE_NAME}:${GIT_BRANCH} ./app'
+          script {
+            docker.withRegistry('', registryCredential ) {
+              dockerAPI = docker.image("${API_IMAGE_NAME}:${GIT_BRANCH}")
+              dockerAPI.push()
+              dockerAPP = docker.image("${APP_IMAGE_NAME}:${GIT_BRANCH}")
+              dockerAPP.push()
             }
+          }
         }
+
       }
     }
   }
