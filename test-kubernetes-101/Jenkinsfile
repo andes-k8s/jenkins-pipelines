@@ -35,18 +35,14 @@ pipeline {
             print "docker build -f api/Dockerfile -t ${API_IMAGE_NAME}:${BRANCH}-${HASH} -t ${API_IMAGE_NAME}:${BRANCH} ./api"
             print "-------------------------------------"
             def apiImage = docker.build("${API_IMAGE_NAME}:${BRANCH}-${HASH}", "./api")
+            apiImage.push() 
             def apiImage2 = docker.build("${API_IMAGE_NAME}:${BRANCH}", "./api")
+            apiImage2.push() 
             def appImage = docker.build("${APP_IMAGE_NAME}:${BRANCH}-${HASH}", "./app")
+            appImage.push() 
             def appImage2 = docker.build("${APP_IMAGE_NAME}:${BRANCH}", "./app")
+            appImage2.push() 
 
-          }
-          script {
-            docker.withRegistry('', registryCredential ) {
-              dockerAPI = docker.image("${API_IMAGE_NAME}:${GIT_BRANCH}")
-              dockerAPI.push()
-              dockerAPP = docker.image("${APP_IMAGE_NAME}:${GIT_BRANCH}")
-              dockerAPP.push()
-            }
           }
         }
       }
