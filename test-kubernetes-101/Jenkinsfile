@@ -29,6 +29,7 @@ pipeline {
       steps {
         container('docker') {
           script {
+            test("Orly")
             def checkoutResponse = checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/hospitalneuquen/turnero-core.git']]])
             def BRANCH = GIT_BRANCH.replaceAll("origin/", "")
             def HASH = checkoutResponse.GIT_COMMIT
