@@ -21,6 +21,7 @@ def call(Map params) {
         userRemoteConfigs: [[ url: repoUrl]]
     ])
     def clonnedAppFolder = getNameFromRepoUrl(repoUrl)
+    sh "ls -lah"
     sh "cd ${clonnedAppFolder}"
     sh "ls -lah"
     def BRANCH = GIT_BRANCH.replaceAll("origin/", "")
