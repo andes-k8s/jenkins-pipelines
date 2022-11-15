@@ -14,6 +14,7 @@ def call(Map params) {
     dockerTags = params.dockerTags ? params.dockerTags : ["${branch}"]
     if (pushToDockerRegistry && params.registryCredential == null) 
       error "registryCredential is needed"
+    echo "Clonning ${repoUrl} branch: ${branch}"
     def checkoutResponse = checkout([
         $class: 'GitSCM',
         branches: [[name:  branch ]],
@@ -22,6 +23,7 @@ def call(Map params) {
     def BRANCH = GIT_BRANCH.replaceAll("origin/", "")
     def HASH = checkoutResponse.GIT_COMMIT
     dockerTags.push("${branch}-${HASH}")
+    echa "Building docker ${imageName} from folder ${dockerFileFolder}"
     docker.withRegistry('', params.registryCredential ) {
       def apiImage = docker.build("${imageName}:${branch}-${HASH}", dockerFileFolder)
       if (pushToDockerRegistry) {
