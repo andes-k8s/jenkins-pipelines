@@ -35,14 +35,16 @@ pipeline {
               branch: "master",
               imageName: API_IMAGE_NAME,
               dockerFile: "./api/Dockerfile",
-              pushToDockerRegistry: false
+              pushToDockerRegistry: true,
+              registryCredential: registryCredential
             )
             andesBuildDocker(
               repoUrl: "https://github.com/hospitalneuquen/turnero-core.git",
               branch: "master",
               imageName: APP_IMAGE_NAME,
               dockerFile: "./app/Dockerfile",
-              pushToDockerRegistry: false
+              pushToDockerRegistry: true,
+              registryCredential: registryCredential
             )
           }
         }
