@@ -30,18 +30,20 @@ pipeline {
       steps {
         container('docker') {
           script {
-            test("Orly")
-            def checkoutResponse = checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/hospitalneuquen/turnero-core.git']]])
-            def BRANCH = GIT_BRANCH.replaceAll("origin/", "")
-            def HASH = checkoutResponse.GIT_COMMIT
-            docker.withRegistry('', registryCredential ) {
-              def apiImage = docker.build("${API_IMAGE_NAME}:${BRANCH}-${HASH}", "./api")
-              apiImage.push() 
-              apiImage.push("${BRANCH}") 
-              def appImage = docker.build("${APP_IMAGE_NAME}:${BRANCH}-${HASH}", "./app")
-              appImage.push() 
-              appImage.push("${BRANCH}") 
-            }
+            andesBuildDocker(
+              repoUrl: "https://github.com/hospitalneuquen/turnero-core.git",
+              branch: "master",
+              imageName: API_IMAGE_NAME,
+              dockerFile: "./api/Dockerfile"
+              pushToDockerRegistry: false
+            )
+            andesBuildDocker(
+              repoUrl: "https://github.com/hospitalneuquen/turnero-core.git",
+              branch: "master",
+              imageName: APP_IMAGE_NAME,
+              dockerFile: "./app/Dockerfile"
+              pushToDockerRegistry: false
+            )
           }
         }
       }
