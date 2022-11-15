@@ -20,6 +20,8 @@ def call(Map params) {
         branches: [[name:  branch ]],
         userRemoteConfigs: [[ url: repoUrl]]
     ])
+    def clonnedAppFolder = getNameFromRepoUrl(repoUrl)
+    sh "cd ${clonnedAppFolder}"
     sh "ls -lah"
     def BRANCH = GIT_BRANCH.replaceAll("origin/", "")
     def HASH = checkoutResponse.GIT_COMMIT
