@@ -12,8 +12,8 @@ def call(Map params) {
     pushToDockerRegistry = params.pushToDockerRegistry ? params.pushToDockerRegistry : false
     dockerFile = params.dockerFile ? params.dockerFile : "Dockerfile"
     dockerTags = params.dockerTags ? params.dockerTags : ["${branch}"]
-    if (pushToDockerRegistry && "${env.DOCKER_REGISTRY}" == 'null') 
-      error "DOCKER_REGISTRY is needed"
+    if (pushToDockerRegistry && params.registryCredential == null) 
+      error "registryCredential is needed"
     def checkoutResponse = checkout([
         $class: 'GitSCM',
         branches: [[name:  branch ]],
