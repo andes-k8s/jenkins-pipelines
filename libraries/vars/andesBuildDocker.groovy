@@ -23,7 +23,7 @@ def call(Map params) {
     def HASH = checkoutResponse.GIT_COMMIT
     dockerTags.push("${branch}-${HASH}")
     docker.withRegistry('', params.registryCredential ) {
-      def apiImage = docker.build("${API_IMAGE_NAME}:${BRANCH}-${HASH}", "./api")
+      def apiImage = docker.build("${imageName}:${branch}-${HASH}", dockerFile)
       if (pushToDockerRegistry) {
         for(tag in dockerTags) {
           apiImage.push(tag) 
