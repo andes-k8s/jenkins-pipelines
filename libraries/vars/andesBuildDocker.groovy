@@ -3,14 +3,14 @@ def call(Map params) {
   def branch = "master" 
   def imageName = null 
   def pushToDockerRegistry = false 
-  def dockerFile = "Dockerfile"
+  def dockerFile = "./Dockerfile"
   def dockerTags = ["${branch}-latest"]
   if (params != null) {
     repoUrl = params.repoUrl ? params.repoUrl : ""
     branch = params.branch ? params.branch : "master"
     imageName = params.imageName ? params.imageName : ""
     pushToDockerRegistry = params.pushToDockerRegistry ? params.pushToDockerRegistry : false
-    dockerFile = params.dockerFile ? params.dockerFile : "Dockerfile"
+    dockerFile = params.dockerFile ? params.dockerFile : "./Dockerfile"
     dockerTags = params.dockerTags ? params.dockerTags : ["${branch}"]
     if (pushToDockerRegistry && params.registryCredential == null) 
       error "registryCredential is needed"
