@@ -23,7 +23,7 @@ def call(Map params) {
     def BRANCH = GIT_BRANCH.replaceAll("origin/", "")
     def HASH = checkoutResponse.GIT_COMMIT
     dockerTags.push("${branch}-${HASH}")
-    echa "Building docker ${imageName} from folder ${dockerFileFolder}"
+    echo "Building docker ${imageName} from folder ${dockerFileFolder}"
     docker.withRegistry('', params.registryCredential ) {
       def apiImage = docker.build("${imageName}:${branch}-${HASH}", dockerFileFolder)
       if (pushToDockerRegistry) {
