@@ -3,14 +3,14 @@ def call(Map params) {
   def branch = "master" 
   def imageName = null 
   def pushToDockerRegistry = false 
-  def dockerFile = "./Dockerfile"
+  def dockerFileFolder = "."
   def dockerTags = ["${branch}-latest"]
   if (params != null) {
     repoUrl = params.repoUrl ? params.repoUrl : ""
     branch = params.branch ? params.branch : "master"
     imageName = params.imageName ? params.imageName : ""
     pushToDockerRegistry = params.pushToDockerRegistry ? params.pushToDockerRegistry : false
-    dockerFile = params.dockerFile ? params.dockerFile : "./Dockerfile"
+    dockerFileFolder = params.dockerFileFolder ? params.dockerFileFolder : "./Dockerfile"
     dockerTags = params.dockerTags ? params.dockerTags : ["${branch}"]
     if (pushToDockerRegistry && params.registryCredential == null) 
       error "registryCredential is needed"
@@ -23,7 +23,7 @@ def call(Map params) {
     def HASH = checkoutResponse.GIT_COMMIT
     dockerTags.push("${branch}-${HASH}")
     docker.withRegistry('', params.registryCredential ) {
-      def apiImage = docker.build("${imageName}:${branch}-${HASH}", dockerFile)
+      def apiImage = docker.build("${imageName}:${branch}-${HASH}", dockerFileFolder)
       if (pushToDockerRegistry) {
         for(tag in dockerTags) {
           apiImage.push(tag) 
