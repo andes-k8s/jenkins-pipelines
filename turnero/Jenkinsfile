@@ -20,7 +20,7 @@ pipeline {
               pushToDockerRegistry = true
               registryCredential = "dockerhub"
               dockerFileFolder = "./api"
-              dockerImageName = API_IMAGE_NAME
+              dockerImageName = "test"
             }
             andesBuildDocker{
               repoUrl = "https://github.com/hospitalneuquen/turnero-core.git"
