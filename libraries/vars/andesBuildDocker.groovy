@@ -28,10 +28,11 @@ def call(body) {
     if (pushToDockerRegistry && config.registryCredential == null) 
       error "registryCredential is needed"
     echo "Clonning ${repoUrl} branch: ${branch}"
-    git (
-      url: repoUrl,
-      branch: branch
-    )
+    def checkoutResponse = checkout([
+        $class: 'GitSCM',
+        branches: [[name:  branch ]],
+        userRemoteConfigs: [[ url: repoUrl]]
+    ])
     def BRANCH = GIT_BRANCH.replaceAll("origin/", "")
     def HASH = checkoutResponse.GIT_COMMIT
     dockerTags.push("${branch}-${HASH}")
