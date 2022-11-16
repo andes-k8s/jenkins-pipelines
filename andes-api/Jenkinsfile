@@ -33,7 +33,7 @@ pipeline {
             andesBuildDocker{
               repoUrl = "https://github.com/andes/api.git"
               branch = GIT_BRANCH
-              imageName = "${env.IMAGE_NAME}"
+              imageName = IMAGE_NAME
               pushToDockerRegistry = true
               registryCredential = "registryCredential"
             }
