@@ -1,0 +1,16 @@
+
+spec:
+  containers:
+  - name: docker
+    image: docker:19.03.1
+    command:
+      - sleep
+    args:
+      - 99d
+    volumeMounts:
+      - name: dockersock
+        mountPath: "/var/run/docker.sock"
+  volumes:
+  - name: dockersock
+    hostPath:
+      path: /var/run/docker.sock
