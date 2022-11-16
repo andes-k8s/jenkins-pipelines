@@ -18,6 +18,7 @@ def call(body) {
   def dockerTags = ["${branch}-latest"]
   echo "PASO ----1"
   echo config.imageName
+  echo env.imageName
   echo "------------"
   if (config != null) {
     repoUrl = config.repoUrl ? config.repoUrl : ""
