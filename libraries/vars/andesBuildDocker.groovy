@@ -19,6 +19,7 @@ def call(body) {
     pushToDockerRegistry = config.pushToDockerRegistry ? config.pushToDockerRegistry : false
     dockerFileFolder = config.dockerFileFolder ? config.dockerFileFolder : "."
     dockerTags = config.dockerTags ? config.dockerTags : ["${branch}"]
+    print(config.registryCredential)
     if (pushToDockerRegistry && config.registryCredential == null) 
       error "registryCredential is needed"
     echo "Clonning ${repoUrl} branch: ${branch}"
