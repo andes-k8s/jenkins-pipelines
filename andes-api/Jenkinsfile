@@ -28,8 +28,8 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        node{
           script {
+            node{
             andesBuildDocker{
               repoUrl = "https://github.com/andes/api.git"
               branch = GIT_BRANCH
@@ -37,8 +37,8 @@ pipeline {
               pushToDockerRegistry = true
               registryCredential = "registryCredential"
             }
+            }
           }
-        }
       }
     }
   }
