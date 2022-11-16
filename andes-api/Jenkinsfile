@@ -31,11 +31,11 @@ pipeline {
         container('docker') {
           script {
             andesBuildDocker{
-              repoUrl: "https://github.com/andes/api.git",
-              branch: GIT_BRANCH,
-              imageName: IMAGE_NAME,
-              pushToDockerRegistry: true,
-              registryCredential: registryCredential
+              repoUrl = "https://github.com/andes/api.git",
+              branch = GIT_BRANCH,
+              imageName = IMAGE_NAME,
+              pushToDockerRegistry = true,
+              registryCredential = registryCredential
             }
           }
         }
