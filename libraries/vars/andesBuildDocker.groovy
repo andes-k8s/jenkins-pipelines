@@ -17,6 +17,8 @@ def call(body) {
   def dockerFileFolder = "."
   def dockerTags = ["${branch}-latest"]
   echo "PASO ----1"
+  echo config.imageName
+  echo "------------"
   if (config != null) {
     repoUrl = config.repoUrl ? config.repoUrl : ""
     branch = config.branch ? config.branch : "master"
