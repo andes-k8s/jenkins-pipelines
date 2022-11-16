@@ -1,12 +1,26 @@
 environment {
-  GIT_BRANCH 
-  IMAGE_NAME
   registryCredential
 }
 
+
 andesBuildDocker{
   repoUrl = "https://github.com/andes/api.git"
-  branch = GIT_BRANCH
   pushToDockerRegistry = true
+  registryCredential = "dockerHub"
+  branchName = "master"
+  branchNameFromParam = "APP_BRANCH"
+  dockerFileFolder = "."
+  dockerTags = ["master"]
+  imageNameFromParam = "APP_IMAGE"
 }
+
+Optional params:
+
+* registryCredential
+* pushToDockerRegistry (default false)
+* branch (default master)
+* branchNameFromParam (default uses branch: "master")
+* dockerFileFolder (default ".")
+* dockerTags (default ["${branch}"])
+* imageNameFromParam (default env.IMAGE_NAME)
 

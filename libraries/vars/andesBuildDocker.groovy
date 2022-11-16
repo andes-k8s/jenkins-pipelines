@@ -6,12 +6,12 @@ def call(body) {
   body()
 
   def repoUrl= null 
-  def branch = "master" 
+  def branch = null
   def pushToDockerRegistry = false 
-  def dockerFileFolder = "."
-  def dockerTags = ["${branch}-latest"]
-  def registryCredential = ""
-  def imageName = ""
+  def dockerFileFolder = null
+  def dockerTags = []
+  def registryCredential = null
+  def imageName = null
   if (config != null) {
     repoUrl = config.repoUrl ? config.repoUrl : ""
     registryCredential = config.registryCredential ? config.registryCredential : ""
@@ -21,14 +21,6 @@ def call(body) {
     dockerTags = config.dockerTags ? config.dockerTags : ["${branch}"]
     imageName = config.dockerImageFromParam ? params[config.dockerImageFromParam] : env.IMAGE_NAME
 
-    println("---------------------------------")
-    println(imageName)
-    println(branch)
-    println(params)
-    println(params.properties)
-    println(env[config.branchFromEnv])
-    println(config)
-    println("---------------------------------")
     if (imageName == null) 
       error "IMAGE_NAME environment variable is required or dockerImageFromEnv parameter"
     if (pushToDockerRegistry && registryCredential == null) 
