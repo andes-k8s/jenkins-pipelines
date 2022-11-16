@@ -1,7 +1,10 @@
 def call(body) {
   def config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST 
+  bodyedelegate = config
   body()
+
+  echo config
 
   def repoUrl= null 
   def branch = "master" 
