@@ -11,19 +11,22 @@ def call(body) {
   def dockerFileFolder = "."
   def dockerTags = ["${branch}-latest"]
   def registryCredential = ""
+  def imageName = ""
   if (config != null) {
     repoUrl = config.repoUrl ? config.repoUrl : ""
     registryCredential = config.registryCredential ? config.registryCredential : ""
-    branch = config.branch ? config.branch : "master"
+    branch = config.branch ? config.branch : (config.branchFromEnv ? env[config.branchFromEnv] : "master") 
     pushToDockerRegistry = config.pushToDockerRegistry ? config.pushToDockerRegistry : false
     dockerFileFolder = config.dockerFileFolder ? config.dockerFileFolder : "."
     dockerTags = config.dockerTags ? config.dockerTags : ["${branch}"]
+    imageName = config.dockerImageFromEnv ? env[config.dockerImageFromEnv] : env.IMAGE_NAME
+
     println("---------------------------------")
-    println(config)
-    println(config.dockerImageName)
+    println(imageName)
+    println(branch)
     println("---------------------------------")
-    if (env.IMAGE_NAME == null) 
-      error "IMAGE_NAME environment variable is required"
+    if (imageName == null) 
+      error "IMAGE_NAME environment variable is required or dockerImageFromEnv parameter"
     if (pushToDockerRegistry && registryCredential == null) 
       error "registryCredential is needed"
     def checkoutResponse = checkout([
@@ -34,7 +37,7 @@ def call(body) {
     def BRANCH = GIT_BRANCH.replaceAll("origin/", "")
     def HASH = checkoutResponse.GIT_COMMIT
     // Check if this hash is already built 
-    def imageAlreadyExists = sh(script: "docker pull -q ${env.IMAGE_NAME}:${branch}-${HASH}", returnStatus: true) 
+    def imageAlreadyExists = sh(script: "docker pull -q ${imageName}:${branch}-${HASH}", returnStatus: true) 
     if (imageAlreadyExists == 0) {
       echo "Image already in dockerhub"
       return
@@ -42,7 +45,7 @@ def call(body) {
 
     dockerTags.push("${branch}-${HASH}")
     docker.withRegistry('', registryCredential ) {
-      def apiImage = docker.build("${env.IMAGE_NAME}:${branch}-${HASH}", dockerFileFolder)
+      def apiImage = docker.build("${imageName}:${branch}-${HASH}", dockerFileFolder)
       if (pushToDockerRegistry) {
         for(tag in dockerTags) {
           apiImage.push(tag) 

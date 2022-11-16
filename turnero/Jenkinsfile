@@ -16,11 +16,11 @@ pipeline {
           node{
             andesBuildDocker{
               repoUrl = "https://github.com/hospitalneuquen/turnero-core.git"
-              branch = GIT_BRANCH
+              branchFromEnv = "GIT_BRANCH"
               pushToDockerRegistry = true
               registryCredential = "dockerhub"
               dockerFileFolder = "./api"
-              dockerImageName = "${API_IMAGE_NAME}"
+              dockerImageFromEnv = "API_IMAGE_NAME"
             }
             andesBuildDocker{
               repoUrl = "https://github.com/hospitalneuquen/turnero-core.git"
@@ -28,7 +28,7 @@ pipeline {
               pushToDockerRegistry = true
               registryCredential = "dockerhub"
               dockerFileFolder = "./app"
-              dockerImageName = APP_IMAGE_NAME
+              dockerImageFromEnv = "APP_IMAGE_NAME"
             }
           }
         }
