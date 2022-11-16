@@ -30,15 +30,11 @@ pipeline {
       steps {
           script {
             node{
-              echo "ANTES s------------------"
-              echo IMAGE_NAME
-              echo env.IMAGE_NAME
-              echo "------------"
               andesBuildDocker{
                 repoUrl = "https://github.com/andes/api.git"
                 branch = GIT_BRANCH
                 pushToDockerRegistry = true
-                registryCredential = "registryCredential"
+                registryCredential = "dockerhub"
               }
             }
           }
