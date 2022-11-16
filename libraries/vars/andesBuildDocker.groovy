@@ -9,6 +9,10 @@ def call(body) {
   println(config.repoUrl)
   println(config.registryCredential)
 
+  echo "PASO ----1"
+  echo config.imageName
+  echo env.IMAGE_NAME
+  echo "------------"
 
   def repoUrl= null 
   def branch = "master" 
@@ -16,10 +20,6 @@ def call(body) {
   def pushToDockerRegistry = false 
   def dockerFileFolder = "."
   def dockerTags = ["${branch}-latest"]
-  echo "PASO ----1"
-  echo config.imageName
-  echo env.imageName
-  echo "------------"
   if (config != null) {
     repoUrl = config.repoUrl ? config.repoUrl : ""
     branch = config.branch ? config.branch : "master"
