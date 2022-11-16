@@ -24,6 +24,8 @@ def call(body) {
     println("---------------------------------")
     println(imageName)
     println(branch)
+    printls(params)
+    printls(params.properties)
     println(env[config.branchFromEnv])
     env.each{item -> println(item)}
     println(config)
