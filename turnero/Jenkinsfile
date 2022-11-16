@@ -29,7 +29,7 @@ pipeline {
       steps {
         container('docker') {
           script {
-            def checkoutResponse = checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/hospitalneuquen/turnero-core.git']]])
+            def checkoutResponse = checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/hospitalneuquen/turnero-core.git']]])
             def BRANCH = GIT_BRANCH.replaceAll("origin/", "")
             def HASH = checkoutResponse.GIT_COMMIT
             docker.withRegistry('', registryCredential ) {
