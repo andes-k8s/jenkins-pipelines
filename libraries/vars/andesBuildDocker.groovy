@@ -25,7 +25,7 @@ def call(body) {
     println(imageName)
     println(branch)
     println(env[config.branchFromEnv])
-    env.for(item -> println(item))
+    env.each(item -> println(item))
     println(config)
     println("---------------------------------")
     if (imageName == null) 
