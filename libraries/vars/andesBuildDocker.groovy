@@ -24,6 +24,8 @@ def call(body) {
     println("---------------------------------")
     println(imageName)
     println(branch)
+    println(env)
+    println(config)
     println("---------------------------------")
     if (imageName == null) 
       error "IMAGE_NAME environment variable is required or dockerImageFromEnv parameter"
