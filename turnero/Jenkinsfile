@@ -5,40 +5,29 @@ pipeline {
   agent {
     kubernetes {
       inheritFrom 'kube-agent'
-      yaml '''
-      spec:
-        containers:
-        - name: docker
-          image: docker:19.03.1
-          command:
-            - sleep
-          args:
-            - 99d
-          volumeMounts:
-            - name: dockersock
-              mountPath: "/var/run/docker.sock"
-        volumes:
-        - name: dockersock
-          hostPath:
-            path: /var/run/docker.sock
-'''
+      yamlFile '../agent-kubernetes/dockerPod.yaml'
     }
   }
   stages {
     stage('Build API') {
       steps {
-        container('docker') {
-          script {
-            def checkoutResponse = checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/hospitalneuquen/turnero-core.git']]])
-            def BRANCH = GIT_BRANCH.replaceAll("origin/", "")
-            def HASH = checkoutResponse.GIT_COMMIT
-            docker.withRegistry('', registryCredential ) {
-              def apiImage = docker.build("${API_IMAGE_NAME}:${BRANCH}-${HASH}", "./api")
-              apiImage.push() 
-              apiImage.push("${BRANCH}") 
-              def appImage = docker.build("${APP_IMAGE_NAME}:${BRANCH}-${HASH}", "./app")
-              appImage.push() 
-              appImage.push("${BRANCH}") 
+        script {
+          node{
+            andesBuildDocker{
+              repoUrl = "https://github.com/hospitalneuquen/turnero-core.git"
+              branch = GIT_BRANCH
+              pushToDockerRegistry = true
+              registryCredential = "dockerhub"
+              dockerFileFolder = "./api"
+              dockerImageName = API_IMAGE_NAME
+            }
+            andesBuildDocker{
+              repoUrl = "https://github.com/hospitalneuquen/turnero-core.git"
+              branch = GIT_BRANCH
+              pushToDockerRegistry = true
+              registryCredential = "dockerhub"
+              dockerFileFolder = "./app"
+              dockerImageName = APP_IMAGE_NAME
             }
           }
         }
