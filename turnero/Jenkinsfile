@@ -21,6 +21,7 @@ pipeline {
               registryCredential = "dockerhub"
               dockerFileFolder = "./api"
               dockerImageFromParam = "API_IMAGE_NAME"
+              gitMergeWithMaster = true
             }
             andesBuildDocker{
               repoUrl = "https://github.com/hospitalneuquen/turnero-core.git"
@@ -29,6 +30,7 @@ pipeline {
               registryCredential = "dockerhub"
               dockerFileFolder = "./app"
               dockerImageFromParam = "APP_IMAGE_NAME"
+              gitMergeWithMaster = true
             }
           }
         }

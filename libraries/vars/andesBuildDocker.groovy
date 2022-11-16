@@ -12,6 +12,7 @@ def call(body) {
   def dockerTags = []
   def registryCredential = null
   def imageName = null
+  def gitMergeWithMaster = null
   if (config != null) {
     repoUrl = config.repoUrl ? config.repoUrl : ""
     registryCredential = config.registryCredential ? config.registryCredential : ""
@@ -20,6 +21,7 @@ def call(body) {
     dockerFileFolder = config.dockerFileFolder ? config.dockerFileFolder : "."
     dockerTags = config.dockerTags ? config.dockerTags : ["${branch}"]
     imageName = config.dockerImageFromParam ? params[config.dockerImageFromParam] : env.IMAGE_NAME
+    gitMergeWithMaster = config.gitMergeWithMaster ? config.gitMergeWithMaster : false
 
     if (imageName == null) 
       error "IMAGE_NAME environment variable is required or dockerImageFromEnv parameter"
@@ -31,6 +33,9 @@ def call(body) {
         userRemoteConfigs: [[ url: repoUrl]]
     ])
     def BRANCH = GIT_BRANCH.replaceAll("origin/", "")
+    if (gitMergeWithMaster) {
+       sh "git merge origin/master --no-edit"
+    }
     def HASH = checkoutResponse.GIT_COMMIT
     // Check if this hash is already built 
     def imageAlreadyExists = sh(script: "docker pull -q ${imageName}:${branch}-${HASH}", returnStatus: true) 
