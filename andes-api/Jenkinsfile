@@ -34,7 +34,7 @@ pipeline {
               branch = GIT_BRANCH
               imageName = IMAGE_NAME
               pushToDockerRegistry = true
-              registryCredential = registryCredential
+              registryCredential = "registryCredential"
             }
           }
       }
