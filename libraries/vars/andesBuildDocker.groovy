@@ -1,40 +1,42 @@
-def call(Map params) {
-  node {
-    def repoUrl= null 
-    def branch = "master" 
-    def imageName = null 
-    def pushToDockerRegistry = false 
-    def dockerFileFolder = "."
-    def dockerTags = ["${branch}-latest"]
-    if (params != null) {
-      repoUrl = params.repoUrl ? params.repoUrl : ""
-      branch = params.branch ? params.branch : "master"
-      imageName = params.imageName ? params.imageName : ""
-      pushToDockerRegistry = params.pushToDockerRegistry ? params.pushToDockerRegistry : false
-      dockerFileFolder = params.dockerFileFolder ? params.dockerFileFolder : "."
-      dockerTags = params.dockerTags ? params.dockerTags : ["${branch}"]
-      if (pushToDockerRegistry && params.registryCredential == null) 
-        error "registryCredential is needed"
-      echo "Clonning ${repoUrl} branch: ${branch}"
-      def checkoutResponse = checkout([
-          $class: 'GitSCM',
-          branches: [[name:  branch ]],
-          userRemoteConfigs: [[ url: repoUrl]]
-      ])
-      def clonnedAppFolder = getNameFromRepoUrl(repoUrl)
-      sh "ls -lah"
-      sh "cd ${clonnedAppFolder}"
-      sh "ls -lah"
-      def BRANCH = GIT_BRANCH.replaceAll("origin/", "")
-      def HASH = checkoutResponse.GIT_COMMIT
-      dockerTags.push("${branch}-${HASH}")
-      echo "Building docker ${imageName} from folder ${dockerFileFolder}"
-      docker.withRegistry('', params.registryCredential ) {
-        def apiImage = docker.build("${imageName}:${branch}-${HASH}", dockerFileFolder)
-        if (pushToDockerRegistry) {
-          for(tag in dockerTags) {
-            apiImage.push(tag) 
-          }
+def call(body) {
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST 
+  body()
+
+  def repoUrl= null 
+  def branch = "master" 
+  def imageName = null 
+  def pushToDockerRegistry = false 
+  def dockerFileFolder = "."
+  def dockerTags = ["${branch}-latest"]
+  if (config != null) {
+    repoUrl = config.repoUrl ? config.repoUrl : ""
+    branch = config.branch ? config.branch : "master"
+    imageName = config.imageName ? config.imageName : ""
+    pushToDockerRegistry = config.pushToDockerRegistry ? config.pushToDockerRegistry : false
+    dockerFileFolder = config.dockerFileFolder ? config.dockerFileFolder : "."
+    dockerTags = config.dockerTags ? config.dockerTags : ["${branch}"]
+    if (pushToDockerRegistry && config.registryCredential == null) 
+      error "registryCredential is needed"
+    echo "Clonning ${repoUrl} branch: ${branch}"
+    def checkoutResponse = checkout([
+        $class: 'GitSCM',
+        branches: [[name:  branch ]],
+        userRemoteConfigs: [[ url: repoUrl]]
+    ])
+    def clonnedAppFolder = getNameFromRepoUrl(repoUrl)
+    sh "ls -lah"
+    sh "cd ${clonnedAppFolder}"
+    sh "ls -lah"
+    def BRANCH = GIT_BRANCH.replaceAll("origin/", "")
+    def HASH = checkoutResponse.GIT_COMMIT
+    dockerTags.push("${branch}-${HASH}")
+    echo "Building docker ${imageName} from folder ${dockerFileFolder}"
+    docker.withRegistry('', config.registryCredential ) {
+      def apiImage = docker.build("${imageName}:${branch}-${HASH}", dockerFileFolder)
+      if (pushToDockerRegistry) {
+        for(tag in dockerTags) {
+          apiImage.push(tag) 
         }
       }
     }
