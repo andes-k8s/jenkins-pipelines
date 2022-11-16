@@ -18,6 +18,9 @@ def call(body) {
     pushToDockerRegistry = config.pushToDockerRegistry ? config.pushToDockerRegistry : false
     dockerFileFolder = config.dockerFileFolder ? config.dockerFileFolder : "."
     dockerTags = config.dockerTags ? config.dockerTags : ["${branch}"]
+    println("---------------------------------")
+    println(config.dockerImageName)
+    println("---------------------------------")
     if (env.IMAGE_NAME == null) 
       error "IMAGE_NAME environment variable is required"
     if (pushToDockerRegistry && registryCredential == null) 
