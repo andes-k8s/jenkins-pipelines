@@ -5,6 +5,11 @@ def call(body) {
   body.delegate = config
   body()
 
+  println("-----------------")
+  println(config.repoUrl)
+  println(config.registryCredential)
+
+
   def repoUrl= null 
   def branch = "master" 
   def imageName = null 
