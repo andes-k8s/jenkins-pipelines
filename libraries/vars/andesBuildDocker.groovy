@@ -15,11 +15,11 @@ def call(body) {
   if (config != null) {
     repoUrl = config.repoUrl ? config.repoUrl : ""
     registryCredential = config.registryCredential ? config.registryCredential : ""
-    branch = config.branchName ? config.branchName : (config.branchFromParam ? env[config.branchFromParam] : "master") 
+    branch = config.branchName ? config.branchName : (config.branchFromParam ? params[config.branchFromParam] : "master") 
     pushToDockerRegistry = config.pushToDockerRegistry ? config.pushToDockerRegistry : false
     dockerFileFolder = config.dockerFileFolder ? config.dockerFileFolder : "."
     dockerTags = config.dockerTags ? config.dockerTags : ["${branch}"]
-    imageName = config.dockerImageFromParam ? param[config.dockerImageFromParam] : env.IMAGE_NAME
+    imageName = config.dockerImageFromParam ? params[config.dockerImageFromParam] : env.IMAGE_NAME
 
     println("---------------------------------")
     println(imageName)
