@@ -20,9 +20,11 @@ def call(body) {
     if (pushToDockerRegistry && config.registryCredential == null) 
       error "registryCredential is needed"
     echo "Clonning ${repoUrl} branch: ${branch}"
-    sh "git clone ${repoUrl}"
+    git (
+      url: repoUrl,
+      branch: branch
+    )
     sh "ls -lah"
-    sh "git checkout ${branch}"
     echo "PASO ----2"
     def clonnedAppFolder = getNameFromRepoUrl(repoUrl)
     echo "PASO ----3"
