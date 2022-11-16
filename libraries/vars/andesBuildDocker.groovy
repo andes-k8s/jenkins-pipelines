@@ -15,7 +15,7 @@ def call(body) {
   if (config != null) {
     repoUrl = config.repoUrl ? config.repoUrl : ""
     registryCredential = config.registryCredential ? config.registryCredential : ""
-    branch = config.branch ? config.branch : (config.branchFromEnv ? env[config.branchFromEnv] : "master") 
+    branch = config.branchName ? config.branchName : (config.branchFromEnv ? env[config.branchFromEnv] : "master") 
     pushToDockerRegistry = config.pushToDockerRegistry ? config.pushToDockerRegistry : false
     dockerFileFolder = config.dockerFileFolder ? config.dockerFileFolder : "."
     dockerTags = config.dockerTags ? config.dockerTags : ["${branch}"]
