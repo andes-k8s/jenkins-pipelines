@@ -32,13 +32,6 @@ def call(body) {
       url: repoUrl,
       branch: branch
     )
-    sh "ls -lah"
-    echo "PASO ----2"
-    def clonnedAppFolder = getNameFromRepoUrl(repoUrl)
-    echo "PASO ----3"
-    sh "ls -lah"
-    sh "cd ${clonnedAppFolder}"
-    sh "ls -lah"
     def BRANCH = GIT_BRANCH.replaceAll("origin/", "")
     def HASH = checkoutResponse.GIT_COMMIT
     dockerTags.push("${branch}-${HASH}")
