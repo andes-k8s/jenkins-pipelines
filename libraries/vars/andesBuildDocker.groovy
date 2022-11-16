@@ -37,7 +37,7 @@ def call(body) {
     def HASH = checkoutResponse.GIT_COMMIT
     dockerTags.push("${branch}-${HASH}")
     echo "Building docker ${imageName} from folder ${dockerFileFolder}"
-    docker.withRegistry('', config.registryCredential ) {
+    docker.withRegistry('', registryCredential ) {
       def apiImage = docker.build("${imageName}:${branch}-${HASH}", dockerFileFolder)
       if (pushToDockerRegistry) {
         for(tag in dockerTags) {
