@@ -31,9 +31,10 @@ def call(body) {
     def HASH = checkoutResponse.GIT_COMMIT
     // Check if this hash is already built 
     def imageAlreadyExists = sh(script: "docker pull -q ${env.IMAGE_NAME}:${HASH}", returnStatus: true) 
-    echo "-----------------------------------------------"
-    echo "${imageAlreadyExists}"
-    echo "-----------------------------------------------"
+    if (imageAlreadyExists == 1) {
+      echo "Image already in dockerhub"
+      return
+    }
 
     dockerTags.push("${branch}-${HASH}")
     docker.withRegistry('', registryCredential ) {
