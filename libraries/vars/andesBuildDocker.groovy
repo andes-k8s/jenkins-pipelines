@@ -18,7 +18,6 @@ def call(body) {
     pushToDockerRegistry = config.pushToDockerRegistry ? config.pushToDockerRegistry : false
     dockerFileFolder = config.dockerFileFolder ? config.dockerFileFolder : "."
     dockerTags = config.dockerTags ? config.dockerTags : ["${branch}"]
-    print(config.registryCredential)
     if (env.IMAGE_NAME == null) 
       error "IMAGE_NAME environment variable is required"
     if (pushToDockerRegistry && registryCredential == null) 
@@ -30,6 +29,12 @@ def call(body) {
     ])
     def BRANCH = GIT_BRANCH.replaceAll("origin/", "")
     def HASH = checkoutResponse.GIT_COMMIT
+    // Check if this hash is already built 
+    def imageAlreadyExists = sh(script: "docker pull ${env.IMAGE_NAME}:${HASH}", returnStdout: true) 
+    echo "-----------------------------------------------"
+    echo imageAlreadyExists
+    echo "-----------------------------------------------"
+
     dockerTags.push("${branch}-${HASH}")
     docker.withRegistry('', registryCredential ) {
       def apiImage = docker.build("${env.IMAGE_NAME}:${branch}-${HASH}", dockerFileFolder)
