@@ -9,6 +9,7 @@ def call(body) {
   def pushToDockerRegistry = false 
   def dockerFileFolder = "."
   def dockerTags = ["${branch}-latest"]
+  echo "PASO ----1"
   if (config != null) {
     repoUrl = config.repoUrl ? config.repoUrl : ""
     branch = config.branch ? config.branch : "master"
@@ -24,7 +25,9 @@ def call(body) {
         branches: [[name:  branch ]],
         userRemoteConfigs: [[ url: repoUrl]]
     ])
+    echo "PASO ----2"
     def clonnedAppFolder = getNameFromRepoUrl(repoUrl)
+    echo "PASO ----3"
     sh "ls -lah"
     sh "cd ${clonnedAppFolder}"
     sh "ls -lah"
