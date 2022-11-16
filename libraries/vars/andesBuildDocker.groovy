@@ -30,8 +30,8 @@ def call(body) {
     def BRANCH = GIT_BRANCH.replaceAll("origin/", "")
     def HASH = checkoutResponse.GIT_COMMIT
     // Check if this hash is already built 
-    def imageAlreadyExists = sh(script: "docker pull -q ${env.IMAGE_NAME}:${HASH}", returnStatus: true) 
-    if (imageAlreadyExists == 1) {
+    def imageAlreadyExists = sh(script: "docker pull -q ${env.IMAGE_NAME}:${branch}-${HASH}", returnStatus: true) 
+    if (imageAlreadyExists == 0) {
       echo "Image already in dockerhub"
       return
     }
