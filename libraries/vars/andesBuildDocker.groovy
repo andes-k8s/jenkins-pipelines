@@ -32,7 +32,7 @@ def call(body) {
     // Check if this hash is already built 
     def imageAlreadyExists = sh(script: "docker pull -q ${env.IMAGE_NAME}:${HASH}", returnStatus: true) 
     echo "-----------------------------------------------"
-    echo imageAlreadyExists
+    echo "${imageAlreadyExists}"
     echo "-----------------------------------------------"
 
     dockerTags.push("${branch}-${HASH}")
