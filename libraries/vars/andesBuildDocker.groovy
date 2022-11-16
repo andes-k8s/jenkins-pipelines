@@ -1,5 +1,4 @@
 #!/usr/bin/groovy
-# Requires registryCredential and IMAGE_NAME
 def call(body) {
   def config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST 
