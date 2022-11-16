@@ -19,7 +19,7 @@ def call(body) {
     dockerFileFolder = config.dockerFileFolder ? config.dockerFileFolder : "."
     dockerTags = config.dockerTags ? config.dockerTags : ["${branch}"]
     println("---------------------------------")
-    println(config.properties)
+    println(config)
     println("---------------------------------")
     if (env.IMAGE_NAME == null) 
       error "IMAGE_NAME environment variable is required"
