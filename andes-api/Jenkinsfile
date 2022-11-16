@@ -28,7 +28,6 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        container('docker') {
           script {
             andesBuildDocker{
               repoUrl = "https://github.com/andes/api.git"
@@ -38,7 +37,6 @@ pipeline {
               registryCredential = registryCredential
             }
           }
-        }
       }
     }
   }
