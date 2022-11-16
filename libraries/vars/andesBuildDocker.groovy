@@ -5,29 +5,20 @@ def call(body) {
   body.delegate = config
   body()
 
-  println("-----------------")
-  println(config.repoUrl)
-  println(config.registryCredential)
-
-  echo "PASO ----1"
-  echo config.imageName
-  echo env.IMAGE_NAME
-  echo "------------"
-
   def repoUrl= null 
   def branch = "master" 
-  def imageName = null 
   def pushToDockerRegistry = false 
   def dockerFileFolder = "."
   def dockerTags = ["${branch}-latest"]
   if (config != null) {
     repoUrl = config.repoUrl ? config.repoUrl : ""
     branch = config.branch ? config.branch : "master"
-    imageName = config.imageName ? config.imageName : ""
     pushToDockerRegistry = config.pushToDockerRegistry ? config.pushToDockerRegistry : false
     dockerFileFolder = config.dockerFileFolder ? config.dockerFileFolder : "."
     dockerTags = config.dockerTags ? config.dockerTags : ["${branch}"]
     print(config.registryCredential)
+    if (env.IMAGE_NAME == null) 
+      error "IMAGE_NAME environment variable is required"
     if (pushToDockerRegistry && config.registryCredential == null) 
       error "registryCredential is needed"
     echo "Clonning ${repoUrl} branch: ${branch}"
@@ -39,9 +30,9 @@ def call(body) {
     def BRANCH = GIT_BRANCH.replaceAll("origin/", "")
     def HASH = checkoutResponse.GIT_COMMIT
     dockerTags.push("${branch}-${HASH}")
-    echo "Building docker ${imageName} from folder ${dockerFileFolder}"
+    echo "Building docker ${env.IMAGE_NAME} from folder ${dockerFileFolder}"
     docker.withRegistry('', registryCredential ) {
-      def apiImage = docker.build("${imageName}:${branch}-${HASH}", dockerFileFolder)
+      def apiImage = docker.build("${env.IMAGE_NAME}:${branch}-${HASH}", dockerFileFolder)
       if (pushToDockerRegistry) {
         for(tag in dockerTags) {
           apiImage.push(tag) 
