@@ -5,8 +5,6 @@ def call(body) {
   body.delegate = config
   body()
 
-  echo config
-
   def repoUrl= null 
   def branch = "master" 
   def imageName = null 
