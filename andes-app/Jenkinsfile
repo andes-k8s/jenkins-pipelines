@@ -6,7 +6,7 @@ pipeline {
   agent {
     kubernetes {
       inheritFrom 'kube-agent'
-      yamlFile: '../agent-kubernetes/dockerPod.yaml'
+      yamlFile '../agent-kubernetes/dockerPod.yaml'
     }
   }
   stages {
