@@ -5,6 +5,10 @@ def call(body) {
   body.delegate = config
   body()
 
+  println("----------------------------")
+  print config
+  println("----------------------------")
+
   if (!config.playbook && !config.playbookFile && !config.playbookFromParams) {
     error "playbook or playbookFile or playbookFromParams are required"
   }
@@ -15,8 +19,9 @@ def call(body) {
     error "userPublicKey or userPublicKeyFromParams are required"
   }
 
-  def playbookFileName = getFileName(config.playbook, config.playbookFromParams)
-  def hostsFileName = getHostsFileName(config.hosts, config.hostFile, config.hostsFromParams)
+
+  def playbookFileName = createFileFrom(config.playbook, config.playbookFile, config.playbookFromParams, "playbook.yml")
+  def hostsFileName = createFileFrom(config.hosts, config.hostFile, config.hostsFromParams, "inventory")
   def userPublicKey = getFromValueOrParams(config.userPublicKey, config.userPublicKeyFromParams)
   def pubKeyFileName = "id_rsa"
   convertValueToFile(userPublicKey, pubKeyFileName)
