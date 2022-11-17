@@ -37,9 +37,9 @@ def getFromValueOrParams(value, paramName) {
   return params[paramName]
 }
 
-def convertValueToFile(value, fileName) {
-  File file = new File(fileName)
-  file.write value 
+def convertValueToFile(content, fileName) {
+  def file = new File("./${fileName}")
+  file.write(content)
 }
 
 def createFileFrom(value, valueFile, valueFromParams, outputFileName, params) {
