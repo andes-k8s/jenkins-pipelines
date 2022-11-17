@@ -38,10 +38,11 @@ def getFromValueOrParams(value, paramName) {
 }
 
 def convertValueToFile(content, fileName) {
-  def file = new File("./${fileName}")
-  file << content
-  println("Creating ${fileName}")
-  println(content)
+  sh "echo '${content}' > ${fileName}"
+  // def file = new File("./${fileName}")
+  // file << content
+  // println("Creating ${fileName}")
+  // println(content)
 }
 
 def createFileFrom(value, valueFile, valueFromParams, outputFileName, params) {
