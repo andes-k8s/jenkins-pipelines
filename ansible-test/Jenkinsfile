@@ -1,0 +1,26 @@
+@Library('andes-library') _
+pipeline {
+  environment {
+  }
+  agent {
+    kubernetes {
+      inheritFrom 'kube-agent'
+      yamlFile '../agent-kubernetes/dockerPod.yaml'
+    }
+  }
+  stages {
+    stage('Run Ansible') {
+      steps {
+          script {
+            node{
+              runAnsible{
+                playBookFromParams = "PLAYBOOK"
+                hostsFromParam = "HOSTS"
+                userPublicKeyFromParams = "USER_PUBLIC_KEY"
+              }
+            }
+          }
+      }
+    }
+  }
+}
