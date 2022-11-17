@@ -24,7 +24,7 @@ def call(body) {
   convertValueToFile(userPublicKey, pubKeyFileName)
   sh "ls -lah"
   sh "chmod 400 ${pubKeyFileName}"
-  sh "docker run --rm -v \$(pwd)/${playbookFileName}:/ansible/${playbookFileName} -v \$(pwd)/${hostsFileName}:/ansible/${hostsFileName} -v ${pubKeyFileName}:/root/.ssh/id_rsa --workdir=/ansible ${ansibleImage} -i ${hostsFileName} ${playbookFileName}"
+  sh "docker run --rm -v \$(pwd)/${playbookFileName}:/ansible/${playbookFileName} -v \$(pwd)/${hostsFileName}:/ansible/${hostsFileName} -v ${pubKeyFileName}:/root/.ssh/id_rsa:ro --workdir=/ansible ${ansibleImage} -i ${hostsFileName} ${playbookFileName}"
 
 
 }
