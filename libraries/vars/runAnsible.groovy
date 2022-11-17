@@ -5,8 +5,8 @@ def call(body) {
   body.delegate = config
   body()
 
-  if (!config.playbook && !config.playbookFromParams) {
-    error "playbook or playbookFromParams are required"
+  if (!config.playbook && !config.playbookFile && !config.playbookFromParams) {
+    error "playbook or playbookFile or playbookFromParams are required"
   }
   if (!config.hosts && !config.hostsFile && !config.hostsFromParams) {
     error "hosts or hostFile or hostsFromParams are required"
@@ -15,7 +15,7 @@ def call(body) {
     error "userPublicKey or userPublicKeyFromParams are required"
   }
 
-  def playbookFileName = getPlaybookFileName(config.playbook, config.playbookFromParams)
+  def playbookFileName = getFileName(config.playbook, config.playbookFromParams)
   def hostsFileName = getHostsFileName(config.hosts, config.hostFile, config.hostsFromParams)
   def userPublicKey = getFromValueOrParams(config.userPublicKey, config.userPublicKeyFromParams)
   def pubKeyFileName = "id_rsa"
@@ -31,37 +31,25 @@ def getFromValueOrParams(value, paramName) {
   return params[paramName]
 }
 
-def getPlaybookFileName(playbook, playbookFromParams) {
-  if (!playbook && !playbookFromParams) {
-    error "playbook or playbookFromParams are required"
-  }
-  def fileName = "playbook.yml"
-  if (playbook) {
-    convertValueToFile(playbook, fileName)
-  } else {
-    fileName = params[playbookFromParams]
-  }
-  return fileName
-}
-
 def convertValueToFile(value, fileName) {
   File file = new File(fileName)
   file.write value 
 }
 
-def getHostsFileName(hosts, hostsFile, hostsFromParams) {
-  if (!hosts && !hostFile && !hostsFromParams) {
-    error "hosts or hostFile or hostsFromParams are required"
+def createFileFrom(value, valueFile, valueFromParams, outputFileName) {
+  if (!value && !valueFile && !valueFromParams) {
+    error "value or valueFile or valueFromParams are required"
   }
-  def fileName = "inventory"
-  if (hosts) {
-    convertValueToFile(hosts, fileName)
+  def fileName = outputFileName 
+  if (value) {
+    convertValueToFile(value, fileName)
   } else {
-    if (hostFile) {
-      fileName = hostFile
+    if (valueFile) {
+      fileName = valueFile
     } else {
-      fileName = params[hostsFromParams] 
+      fileName = params[outputFileName] 
     }
   }
+  return fileName
 }
 
