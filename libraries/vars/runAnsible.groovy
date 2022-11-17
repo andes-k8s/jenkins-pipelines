@@ -39,7 +39,7 @@ def getFromValueOrParams(value, paramName) {
 
 def convertValueToFile(content, fileName) {
   def file = new File("./${fileName}")
-  file.write(content)
+  file << content
   println("Creating ${fileName}")
   println(content)
 }
