@@ -27,8 +27,8 @@ def call(body) {
   def pubKeyFileName = "id_rsa"
   convertValueToFile(userPublicKey, pubKeyFileName)
   sh "ls -lah"
-  sh "docker run --rm -v ${playbookFileName}:/ansible/${playbookFileName} -v ${hostsFileName}:/ansible/${hostsFileName} -v ${pubKeyFileName}:/root/.ssh/id_rsa --workdir=/ansible ${ansibleImage} ls -lah"
-  sh "docker run --rm -v ${playbookFileName}:/ansible/${playbookFileName} -v ${hostsFileName}:/ansible/${hostsFileName} -v ${pubKeyFileName}:/root/.ssh/id_rsa --workdir=/ansible ${ansibleImage} ansible-playbook -i ${hostsFileName} ${playbookFileName}"
+  sh "docker run --rm -v ./${playbookFileName}:/ansible/${playbookFileName} -v ./${hostsFileName}:/ansible/${hostsFileName} -v ${pubKeyFileName}:/root/.ssh/id_rsa --workdir=/ansible ${ansibleImage} ls -lah"
+  sh "docker run --rm -v ./${playbookFileName}:/ansible/${playbookFileName} -v ./${hostsFileName}:/ansible/${hostsFileName} -v ${pubKeyFileName}:/root/.ssh/id_rsa --workdir=/ansible ${ansibleImage} ansible-playbook -i ${hostsFileName} ${playbookFileName}"
 
 
 }
