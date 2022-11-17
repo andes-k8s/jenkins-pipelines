@@ -59,9 +59,7 @@ def createFileFrom(value, valueFile, valueFromParams, outputFileName, params) {
     } else {
       println("--3")
       println(params[valueFromParams])
-
-      println(params)
-      fileName = params[valueFromParams] 
+      convertValueToFile(params[valueFromParams], outputFileName)
     }
   }
   return fileName
