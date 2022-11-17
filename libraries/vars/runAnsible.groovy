@@ -40,6 +40,8 @@ def getFromValueOrParams(value, paramName) {
 def convertValueToFile(content, fileName) {
   def file = new File("./${fileName}")
   file.write(content)
+  println("Creating ${fileName}")
+  println(content)
 }
 
 def createFileFrom(value, valueFile, valueFromParams, outputFileName, params) {
@@ -48,17 +50,11 @@ def createFileFrom(value, valueFile, valueFromParams, outputFileName, params) {
   }
   def fileName = outputFileName 
   if (value) {
-    println("--1")
-    println(value)
     convertValueToFile(value, fileName)
   } else {
     if (valueFile) {
-      println("--2")
-      println(valueFile)
       fileName = valueFile
     } else {
-      println("--3")
-      println(params[valueFromParams])
       convertValueToFile(params[valueFromParams], outputFileName)
     }
   }
