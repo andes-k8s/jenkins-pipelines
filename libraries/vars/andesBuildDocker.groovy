@@ -13,6 +13,7 @@ def call(body) {
   def registryCredential = null
   def imageName = null
   def gitMergeWithMaster = null
+  def dockerBuildArgs = []
   if (config != null) {
     repoUrl = config.repoUrl ? config.repoUrl : ""
     registryCredential = config.registryCredential ? config.registryCredential : ""
@@ -21,6 +22,7 @@ def call(body) {
     dockerFileFolder = config.dockerFileFolder ? config.dockerFileFolder : "."
     dockerTags = config.dockerTags ? config.dockerTags : ["${branch}"]
     imageName = config.dockerImageFromParam ? params[config.dockerImageFromParam] : env.IMAGE_NAME
+    dockerBuildArgs = config.dockerBuildArgs ? dockerBuildArgs : []
     gitMergeWithMaster = config.gitMergeWithMaster ? config.gitMergeWithMaster : false
 
     if (imageName == null) 
@@ -43,10 +45,12 @@ def call(body) {
       echo "Image already in dockerhub"
       return
     }
+    def buildArgsString = ""
+    dockerBuildArgs.each{arg -> buildArgsString += "--build-arg ${arg} "}
 
     dockerTags.push("${branch}-${HASH}")
     docker.withRegistry('', registryCredential ) {
-      def apiImage = docker.build("${imageName}:${branch}-${HASH}", dockerFileFolder)
+      def apiImage = docker.build("${imageName}:${branch}-${HASH}", "${buildArgsString} ${dockerFileFolder}")
       if (pushToDockerRegistry) {
         for(tag in dockerTags) {
           apiImage.push(tag) 

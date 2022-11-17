@@ -10,8 +10,10 @@ andesBuildDocker{
   branchName = "master"
   branchNameFromParam = "APP_BRANCH"
   dockerFileFolder = "."
+  dockerBuildArgs=["ENVIRONMENT=prod"]
   dockerTags = ["master"]
   imageNameFromParam = "APP_IMAGE"
+  gitMergeWithMaster = true
 }
 
 Optional params:
@@ -20,7 +22,9 @@ Optional params:
 * pushToDockerRegistry (default false)
 * branch (default master)
 * branchNameFromParam (default uses branch: "master")
+* dockerBuildArgs (default [])
 * dockerFileFolder (default ".")
 * dockerTags (default ["${branch}"])
 * imageNameFromParam (default env.IMAGE_NAME)
+* gitMergeWithMaster (default false)
 
