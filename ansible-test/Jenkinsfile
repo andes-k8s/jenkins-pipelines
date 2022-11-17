@@ -13,7 +13,7 @@ pipeline {
             node{
               runAnsible{
                 playbookFromParams = "PLAYBOOK"
-                hostsFromParam = "HOSTS"
+                hostsFromParams = "HOSTS"
                 userPublicKeyFromParams = "USER_PUBLIC_KEY"
               }
             }
