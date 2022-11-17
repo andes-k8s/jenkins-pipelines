@@ -1,7 +1,5 @@
 @Library('andes-library') _
 pipeline {
-  environment {
-  }
   agent {
     kubernetes {
       inheritFrom 'kube-agent'
