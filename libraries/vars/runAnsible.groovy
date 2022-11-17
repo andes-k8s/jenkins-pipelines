@@ -1,5 +1,6 @@
 #!/usr/bin/groovy
 def call(body) {
+  def ansibleImage = "webdevops/ansible:alpine-3"
   def config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST 
   body.delegate = config
@@ -26,7 +27,7 @@ def call(body) {
   def pubKeyFileName = "id_rsa"
   convertValueToFile(userPublicKey, pubKeyFileName)
   sh "ls -lah"
-  sh "docker run --rm -v $PWD:/ansible/playbooks -v $PWD/${pubKeyFileName}:/root/.ssh/id_rsa philm/ansible_playbook  ${playbookFileName} -i ${hostsFileName} "
+  sh "docker run --rm -v $PWD:/ansible/playbooks -v $PWD/${pubKeyFileName}:/root/.ssh/id_rsa ${ansibleImage} ${playbookFileName} -i ${hostsFileName} "
 
 
 }
