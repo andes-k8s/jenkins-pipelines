@@ -1,6 +1,6 @@
 #!/usr/bin/groovy
 def call(body) {
-  def ansibleImage = "webdevops/ansible:alpine-3"
+  def ansibleImage = "andesnqn/ansible-runner:master"
   def config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST 
   body.delegate = config
