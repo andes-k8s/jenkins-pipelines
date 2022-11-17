@@ -23,9 +23,9 @@ def call(body) {
   def playbookFileName = createFileFrom(config.playbook, config.playbookFile, config.playbookFromParams, "playbook.yml")
   def hostsFileName = createFileFrom(config.hosts, config.hostFile, config.hostsFromParams, "inventory")
   def userPublicKey = getFromValueOrParams(config.userPublicKey, config.userPublicKeyFromParams)
-  def pubKeyFileName = "id_rsa"
+  def pubKeyFileName = "id_rsa.pub"
   convertValueToFile(userPublicKey, pubKeyFileName)
-  sh "docker run --rm -it -v .:/ansible/playbooks philm/ansible_playbook -v ./${pubKeyFileName}:/root/id_rsa ${playbookFileName} -i ${hostsFileName} "
+  sh "docker run --rm -v .:/ansible/playbooks philm/ansible_playbook -v ./${pubKeyFileName}:/root/id_rsa.pub ${playbookFileName} -i ${hostsFileName} "
 
 
 }
