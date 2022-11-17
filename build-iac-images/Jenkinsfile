@@ -19,7 +19,7 @@ pipeline {
                 branch = GIT_BRANCH
                 pushToDockerRegistry = true
                 registryCredential = "dockerhub"
-                dockerBuildFolder = "./docker-images/ansible-runner"
+                dockerFileFolder = "./docker-images/ansible-runner"
               }
             }
           }
