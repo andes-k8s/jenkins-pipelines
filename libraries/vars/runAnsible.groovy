@@ -20,8 +20,8 @@ def call(body) {
   }
 
 
-  def playbookFileName = createFileFrom(config.playbook, config.playbookFile, config.playbookFromParams, "playbook.yml")
-  def hostsFileName = createFileFrom(config.hosts, config.hostFile, config.hostsFromParams, "inventory")
+  def playbookFileName = createFileFrom(config.playbook, config.playbookFile, config.playbookFromParams, "playbook.yml", params)
+  def hostsFileName = createFileFrom(config.hosts, config.hostFile, config.hostsFromParams, "inventory", params)
   def userPublicKey = getFromValueOrParams(config.userPublicKey, config.userPublicKeyFromParams)
   def pubKeyFileName = "id_rsa"
   convertValueToFile(userPublicKey, pubKeyFileName)
@@ -42,7 +42,7 @@ def convertValueToFile(value, fileName) {
   file.write value 
 }
 
-def createFileFrom(value, valueFile, valueFromParams, outputFileName) {
+def createFileFrom(value, valueFile, valueFromParams, outputFileName, params) {
   if (!value && !valueFile && !valueFromParams) {
     error "value or valueFile or valueFromParams are required"
   }
