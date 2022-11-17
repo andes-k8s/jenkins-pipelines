@@ -6,10 +6,6 @@ def call(body) {
   body.delegate = config
   body()
 
-  println("----------------------------")
-  print config
-  println("----------------------------")
-
   if (!config.playbook && !config.playbookFile && !config.playbookFromParams) {
     error "playbook or playbookFile or playbookFromParams are required"
   }
@@ -43,8 +39,6 @@ def getFromValueOrParams(value, paramName) {
 
 def convertValueToFile(content, fileName) {
   sh "echo '${content}' > ${fileName}"
-  println("-------------------- ${fileName}")
-  sh "cat ${fileName}"
 }
 
 def createFileFrom(value, valueFile, valueFromParams, outputFileName, params) {
