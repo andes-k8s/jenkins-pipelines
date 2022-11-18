@@ -1,0 +1,29 @@
+@Library('andes-library') _
+pipeline {
+  environment {
+    registryCredential = "dockerhub"
+  }
+  agent {
+    kubernetes {
+      inheritFrom 'kube-agent'
+      yamlFile '../agent-kubernetes/dockerPod.yaml'
+    }
+  }
+  stages {
+    stage('Build') {
+      steps {
+          script {
+            node{
+              andesBuildDocker{
+                repoUrl = "https://github.com/andes/app.git"
+                branch = GIT_BRANCH
+                pushToDockerRegistry = true
+                registryCredential = "dockerhub"
+                dockerBuildArgs=["ENVIRONMENT=prod"]
+              }
+            }
+          }
+      }
+    }
+  }
+}
