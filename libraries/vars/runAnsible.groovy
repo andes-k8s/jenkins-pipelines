@@ -17,6 +17,7 @@ def call(body) {
   }
 
   sh "ls -lah"
+  sh "ls playbook.yml"
   sh "rm -f id_rsa"
   def playbookFileName = createFileFrom(config.playbook, config.playbookFile, config.playbookFromParams, "playbook.yml", params)
   def hostsFileName = createFileFrom(config.hosts, config.hostFile, config.hostsFromParams, "inventory.ini", params)
