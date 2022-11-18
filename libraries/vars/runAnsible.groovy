@@ -12,18 +12,19 @@ def call(body) {
   if (!config.hosts && !config.hostsFile && !config.hostsFromParams) {
     error "hosts or hostFile or hostsFromParams are required"
   }
-  if (!config.userPublicKey && !config.userPublicKeyFromParams) {
-    error "userPublicKey or userPublicKeyFromParams are required"
+  if (!config.userPrivateKey && !config.userPrivateKeyFromParams) {
+    error "userPrivateKey or userPrivateKeyFromParams are required"
   }
 
 
   def playbookFileName = createFileFrom(config.playbook, config.playbookFile, config.playbookFromParams, "playbook.yml", params)
   def hostsFileName = createFileFrom(config.hosts, config.hostFile, config.hostsFromParams, "inventory.ini", params)
-  def userPublicKey = getFromValueOrParams(config.userPublicKey, config.userPublicKeyFromParams)
-  def pubKeyFileName = "id_rsa"
+  def userPrivateKey = getFromValueOrParams(config.userPrivateKey, config.userPrivateKeyFromParams)
+  def privKeyFileName = "id_rsa"
   sh "rm -f id_rsa"
-  convertValueToFile(userPublicKey, pubKeyFileName)
-  sh "docker run --rm -v \$(pwd)/${playbookFileName}:/app/${playbookFileName} -v \$(pwd)/${hostsFileName}:/app/${hostsFileName} -v \$(pwd)/${pubKeyFileName}:/root/.ssh/id_rsa ${ansibleImage} -i ${hostsFileName} /app/${playbookFileName}"
+  convertValueToFile(userPrivateKey, privKeyFileName)
+  sh "ls -lah"
+  sh "docker run --rm -v \$(pwd)/${playbookFileName}:/app/${playbookFileName} -v \$(pwd)/${hostsFileName}:/app/${hostsFileName} -v \$(pwd)/${privKeyFileName}:/root/.ssh/id_rsa ${ansibleImage} -i ${hostsFileName} /app/${playbookFileName}"
 
 
 }
