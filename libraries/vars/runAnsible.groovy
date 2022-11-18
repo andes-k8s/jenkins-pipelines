@@ -6,6 +6,10 @@ def call(body) {
   body.delegate = config
   body()
 
+  println("-------------------------------")
+  println(env)
+  println("-------------------------------")
+
   if (!config.playbook && !config.playbookFile && !config.playbookFromParams) {
     error "playbook or playbookFile or playbookFromParams are required"
   }
