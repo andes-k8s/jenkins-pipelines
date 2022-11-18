@@ -16,13 +16,14 @@ def call(body) {
     error "userPrivateKey or userPrivateKeyFromParams are required"
   }
 
+  sh "ls -lah"
+  sh "rm -f id_rsa"
   def playbookFileName = createFileFrom(config.playbook, config.playbookFile, config.playbookFromParams, "playbook.yml", params)
   def hostsFileName = createFileFrom(config.hosts, config.hostFile, config.hostsFromParams, "inventory.ini", params)
   def userPrivateKey = getFromValueOrParams(config.userPrivateKey, config.userPrivateKeyFromParams)
   def privKeyFileName = "id_rsa"
-  sh "rm -f id_rsa"
-  convertValueToFile(userPrivateKey, privKeyFileName)
   sh "ls -lah"
+  convertValueToFile(userPrivateKey, privKeyFileName)
   sh "docker run --rm -v \$(pwd)/${playbookFileName}:/app/${playbookFileName} -v \$(pwd)/${hostsFileName}:/app/${hostsFileName} -v \$(pwd)/${privKeyFileName}:/root/.ssh/id_rsa ${ansibleImage} -i ${hostsFileName} /app/${playbookFileName}"
 
 
@@ -46,6 +47,7 @@ def createFileFrom(value, valueFile, valueFromParams, outputFileName, params) {
   if (value) {
     convertValueToFile(value, fileName)
   } else {
+    println("--------2 ---  ${outputFileName}")
     if (valueFile) {
       fileName = valueFile
     } else {
