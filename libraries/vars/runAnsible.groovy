@@ -20,6 +20,13 @@ def call(body) {
     error "userPrivateKey or userPrivateKeyFromParams are required"
   }
 
+  def checkoutResponse = checkout([
+      $class: 'GitSCM',
+      branches: [[name:  config.repo_branch ]],
+      userRemoteConfigs: [[ url: config.repo]]
+  ])
+  sh "cd ${config.repo_folder}"
+
   sh "ls -lah"
   sh "pwd"
 

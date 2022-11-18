@@ -12,6 +12,9 @@ pipeline {
           script {
             node{
               runAnsible{
+                repo         = "https://github.com/andes-k8s/jenkins-pipelines.git"
+                repo_branch  = "main"
+                repo_folder = "clean-k8s-logs/"
                 playbookFile = "playbook.yml"
                 hostsFromParams = "HOSTS"
                 userPrivateKeyFromParams = "ID_RSA"
