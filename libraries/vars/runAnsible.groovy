@@ -17,6 +17,7 @@ def call(body) {
   }
 
   sh "ls -lah"
+  sh "pwd"
 
   // sh "rm -Rf id_rsa"
   // sh "rm -Rf playbook.yml"
