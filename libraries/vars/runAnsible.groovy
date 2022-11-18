@@ -17,6 +17,7 @@ def call(body) {
   }
 
   sh "ls -lah"
+
   // sh "rm -Rf id_rsa"
   // sh "rm -Rf playbook.yml"
   // sh "rm -Rf inventory.ini"
