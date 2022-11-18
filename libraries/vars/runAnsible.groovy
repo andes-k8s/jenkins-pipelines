@@ -1,12 +1,10 @@
 #!/usr/bin/groovy
 def call(body) {
-  sh "ls -lah"
-  sh "pwd"
-  def ansibleImage = "andesnqn/ansible-runner:master"
-  def config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST 
   body.delegate = config
   body()
+  def ansibleImage = "andesnqn/ansible-runner:master"
+  def config = [:]
 
   println("-------------------------------")
   println(env)
