@@ -1,5 +1,5 @@
 ---
- - name: Create cron to free docker log space
+ - name: Free docker log space
    hosts: kubernetes
    become: true
    become_user: root
