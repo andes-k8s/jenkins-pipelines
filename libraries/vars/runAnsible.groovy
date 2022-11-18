@@ -7,7 +7,7 @@ def call(body) {
   def config = [:]
 
   println("-------------------------------")
-  println(env)
+  sh "ls -lah ${WORKSPACE}"
   println("-------------------------------")
 
   if (!config.playbook && !config.playbookFile && !config.playbookFromParams) {
