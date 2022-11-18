@@ -29,6 +29,10 @@ def call(body) {
   // convertValueToFile(userPrivateKey, privKeyFileName)
   sh "ls -lah"
   sh "ls -lah ../"
+  sh "ls -lah ../clean-k8s-logs-new"
+  sh "ls -lah ../clean-k8s-logs-new@libs"
+  sh "ls -lah ../clean-k8s-logs-new@script"
+  sh "ls -lah ../clean-k8s-logs-new@tmp"
   // sh "docker run --rm -v \$(pwd)/${playbookFileName}:/app/${playbookFileName} -v \$(pwd)/${hostsFileName}:/app/${hostsFileName} -v \$(pwd)/${privKeyFileName}:/root/.ssh/id_rsa ${ansibleImage} -i ${hostsFileName} /app/${playbookFileName}"
 
   sh "rm -Rf id_rsa"
