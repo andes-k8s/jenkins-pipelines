@@ -22,10 +22,8 @@ def call(body) {
   def userPublicKey = getFromValueOrParams(config.userPublicKey, config.userPublicKeyFromParams)
   def pubKeyFileName = "id_rsa"
   convertValueToFile(userPublicKey, pubKeyFileName)
-  sh "chmod 400 id_rsa"
-  sh "ls -lah"
-  sh "docker run --rm -v \$(pwd)/${playbookFileName}:/ansible/${playbookFileName} -v \$(pwd)/${hostsFileName}:/ansible/${hostsFileName} -v ${pubKeyFileName}:/root/.ssh/id_rsa:ro --workdir=/ansible ${ansibleImage} -i ${hostsFileName} ${playbookFileName}"
   sh "rm -f id_rsa"
+  sh "docker run --rm -v \$(pwd)/${playbookFileName}:/ansible/${playbookFileName} -v \$(pwd)/${hostsFileName}:/ansible/${hostsFileName} -v ${pubKeyFileName}:/root/.ssh/id_rsa:ro --workdir=/ansible ${ansibleImage} -i ${hostsFileName} ${playbookFileName}"
 
 
 }
