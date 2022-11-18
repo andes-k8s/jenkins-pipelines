@@ -24,8 +24,8 @@ def call(body) {
   sh "rm -f id_rsa"
   convertValueToFile(userPublicKey, pubKeyFileName)
   sh "ls -lah"
-  sh "docker run --rm -v \$(pwd)/${playbookFileName}:/ansible/${playbookFileName} -v \$(pwd)/${hostsFileName}:/app/${hostsFileName} -v \$(pwd)/${pubKeyFileName}:/root/.ssh/id_rsa --entrypoint /usr/bin/ls ${ansibleImage}"
-  sh "docker run --rm -v \$(pwd)/${playbookFileName}:/ansible/${playbookFileName} -v \$(pwd)/${hostsFileName}:/app/${hostsFileName} -v \$(pwd)/${pubKeyFileName}:/root/.ssh/id_rsa --entrypoint /usr/bin/pwd ${ansibleImage}"
+  sh "docker run --rm -v \$(pwd)/${playbookFileName}:/ansible/${playbookFileName} -v \$(pwd)/${hostsFileName}:/app/${hostsFileName} -v \$(pwd)/${pubKeyFileName}:/root/.ssh/id_rsa --entrypoint ls ${ansibleImage}"
+  sh "docker run --rm -v \$(pwd)/${playbookFileName}:/ansible/${playbookFileName} -v \$(pwd)/${hostsFileName}:/app/${hostsFileName} -v \$(pwd)/${pubKeyFileName}:/root/.ssh/id_rsa --entrypoint pwd ${ansibleImage}"
   sh "docker run --rm -v \$(pwd)/${playbookFileName}:/ansible/${playbookFileName} -v \$(pwd)/${hostsFileName}:/app/${hostsFileName} -v \$(pwd)/${pubKeyFileName}:/root/.ssh/id_rsa ${ansibleImage} -i ${hostsFileName} /app/${playbookFileName}"
 
 
