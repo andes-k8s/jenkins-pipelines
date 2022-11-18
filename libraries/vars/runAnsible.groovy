@@ -35,6 +35,7 @@ def call(body) {
   sh "rm -Rf playbook.yml"
   sh "rm -Rf inventory.ini"
   sh "rm -Rf ../clean-k8s-logs"
+  sh "rm -Rf ../clean-k8s-logs-new"
 
 }
 
