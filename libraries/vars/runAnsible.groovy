@@ -21,6 +21,7 @@ def call(body) {
   def userPrivateKey = getFromValueOrParams(config.userPrivateKey, config.userPrivateKeyFromParams)
   def privKeyFileName = "id_rsa"
   sh "rm -f id_rsa"
+  sh "rm -Rf playbook.yml"
   convertValueToFile(userPrivateKey, privKeyFileName)
   sh "ls -lah"
   sh "docker run --rm -v \$(pwd)/${playbookFileName}:/app/${playbookFileName} -v \$(pwd)/${hostsFileName}:/app/${hostsFileName} -v \$(pwd)/${privKeyFileName}:/root/.ssh/id_rsa ${ansibleImage} -i ${hostsFileName} /app/${playbookFileName}"
