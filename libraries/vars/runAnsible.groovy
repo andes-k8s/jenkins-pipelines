@@ -16,6 +16,7 @@ def call(body) {
     error "userPrivateKey or userPrivateKeyFromParams are required"
   }
 
+  sh "git reset --hard"
 
   def playbookFileName = createFileFrom(config.playbook, config.playbookFile, config.playbookFromParams, "playbook.yml", params)
   def hostsFileName = createFileFrom(config.hosts, config.hostFile, config.hostsFromParams, "inventory.ini", params)
