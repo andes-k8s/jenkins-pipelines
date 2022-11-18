@@ -25,7 +25,7 @@ def call(body) {
       branches: [[name:  config.repo_branch ]],
       userRemoteConfigs: [[ url: config.repo]]
   ])
-  sh "cd ${config.repo_folder}"
+  sh "cd ${config.repo_folder} && ls -lah"
 
   sh "ls -lah"
   sh "pwd"
