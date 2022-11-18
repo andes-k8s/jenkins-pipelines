@@ -14,7 +14,7 @@ pipeline {
               runAnsible{
                 playbookFile = "playbook.yml"
                 hostsFromParams = "HOSTS"
-                userPublicKeyFromParams = "ID_RSA"
+                userPrivateKeyFromParams = "ID_RSA"
               }
             }
           }

@@ -17,7 +17,6 @@ def call(body) {
   }
 
   sh "ls -lah"
-  sh ""
   sh "rm -f id_rsa"
   def playbookFileName = createFileFrom(config.playbook, config.playbookFile, config.playbookFromParams, "playbook.yml", params)
   def hostsFileName = createFileFrom(config.hosts, config.hostFile, config.hostsFromParams, "inventory.ini", params)
@@ -25,8 +24,6 @@ def call(body) {
   def privKeyFileName = "id_rsa"
   convertValueToFile(userPrivateKey, privKeyFileName)
   sh "ls -lah"
-  sh "rm -Rf playbook.yml"
-  sh "rm -f *"
   sh "docker run --rm -v \$(pwd)/${playbookFileName}:/app/${playbookFileName} -v \$(pwd)/${hostsFileName}:/app/${hostsFileName} -v \$(pwd)/${privKeyFileName}:/root/.ssh/id_rsa ${ansibleImage} -i ${hostsFileName} /app/${playbookFileName}"
 
 
