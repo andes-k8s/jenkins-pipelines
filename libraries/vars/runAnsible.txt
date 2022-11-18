@@ -1,0 +1,24 @@
+
+runAnsible{
+  playbookFile = "playbook.yml"
+  hostsFromParams = "HOSTS"
+  userPrivateKeyFromParams = "USER_PRIVATE_KEY"
+}
+
+
+Playbook options
+* playbook: playbook as string 
+* playbookFile: playbook file path+name 
+* playbookFromParams: load playbook from params 
+
+
+Hosts options 
+* hosts: string 
+* hostsFile: path+name of hosts file 
+* hostsFromParams: load hosts from params 
+
+
+SSH Private Key options 
+* userPublicKey: key as string 
+* userPrivateKeyFromParams: load private key from params
+
