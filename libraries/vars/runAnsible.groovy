@@ -25,17 +25,12 @@ def call(body) {
       branches: [[name:  config.repo_branch ]],
       userRemoteConfigs: [[ url: config.repo]]
   ])
-  sh "cd ${config.repo_folder} && ls -lah"
+  sh "cp -R ${config.repo_folder}/* ."
 
-  sh "ls -lah"
-  sh "pwd"
 
-  // sh "rm -Rf id_rsa"
-  // sh "rm -Rf playbook.yml"
-  // sh "rm -Rf inventory.ini"
-  // def playbookFileName = createFileFrom(config.playbook, config.playbookFile, config.playbookFromParams, "playbook.yml", params)
-  // def hostsFileName = createFileFrom(config.hosts, config.hostFile, config.hostsFromParams, "inventory.ini", params)
-  // def userPrivateKey = getFromValueOrParams(config.userPrivateKey, config.userPrivateKeyFromParams)
+  def playbookFileName = createFileFrom(config.playbook, config.playbookFile, config.playbookFromParams, "playbook.yml", params)
+  def hostsFileName = createFileFrom(config.hosts, config.hostFile, config.hostsFromParams, "inventory.ini", params)
+  def userPrivateKey = getFromValueOrParams(config.userPrivateKey, config.userPrivateKeyFromParams)
   // def privKeyFileName = "id_rsa"
   // convertValueToFile(userPrivateKey, privKeyFileName)
   sh "ls -lah"
