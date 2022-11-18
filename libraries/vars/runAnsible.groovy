@@ -25,10 +25,10 @@ def call(body) {
   def privKeyFileName = "id_rsa"
   convertValueToFile(userPrivateKey, privKeyFileName)
   sh "ls -lah"
-  sh "docker run --rm -v \$(pwd)/${playbookFileName}:/app/${playbookFileName} -v \$(pwd)/${hostsFileName}:/app/${hostsFileName} -v \$(pwd)/${privKeyFileName}:/root/.ssh/id_rsa ${ansibleImage} -i ${hostsFileName} /app/${playbookFileName}"
-
   sh "rm -Rf playbook.yml"
   sh "rm -f *"
+  sh "docker run --rm -v \$(pwd)/${playbookFileName}:/app/${playbookFileName} -v \$(pwd)/${hostsFileName}:/app/${hostsFileName} -v \$(pwd)/${privKeyFileName}:/root/.ssh/id_rsa ${ansibleImage} -i ${hostsFileName} /app/${playbookFileName}"
+
 
 }
 
