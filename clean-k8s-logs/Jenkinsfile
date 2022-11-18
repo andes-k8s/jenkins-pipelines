@@ -10,14 +10,12 @@ pipeline {
     stage('Run Ansible') {
       steps {
           script {
-            node{
               runAnsible{
                 playbookFile = "playbook.yml"
                 hostsFromParams = "HOSTS"
                 userPrivateKeyFromParams = "ID_RSA"
               }
             }
-          }
       }
     }
   }
