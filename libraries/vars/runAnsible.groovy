@@ -23,7 +23,8 @@ def call(body) {
   def pubKeyFileName = "id_rsa"
   sh "rm -f id_rsa"
   convertValueToFile(userPublicKey, pubKeyFileName)
-  sh "docker run --rm -v \$(pwd)/${playbookFileName}:/ansible/${playbookFileName} -v \$(pwd)/${hostsFileName}:/ansible/${hostsFileName} -v ${pubKeyFileName}:/root/.ssh/id_rsa:ro --workdir=/ansible ${ansibleImage} -i ${hostsFileName} ${playbookFileName}"
+  sh "ls -lah"
+  sh "docker run --rm -v \$(pwd)/${playbookFileName}:/ansible/${playbookFileName} -v \$(pwd)/${hostsFileName}:/ansible/${hostsFileName} -v \$(pwd)/${pubKeyFileName}:/root/.ssh/id_rsa:ro --workdir=/ansible ${ansibleImage} -i ${hostsFileName} ${playbookFileName}"
 
 
 }
