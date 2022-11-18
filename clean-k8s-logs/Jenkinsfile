@@ -11,6 +11,7 @@ pipeline {
       steps {
           script {
             node{
+              checkout scm
               runAnsible{
                 playbookFile = "playbook.yml"
                 hostsFromParams = "HOSTS"
