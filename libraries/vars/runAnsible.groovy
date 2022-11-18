@@ -21,8 +21,8 @@ def call(body) {
   def hostsFileName = createFileFrom(config.hosts, config.hostFile, config.hostsFromParams, "inventory.ini", params)
   def userPublicKey = getFromValueOrParams(config.userPublicKey, config.userPublicKeyFromParams)
   def pubKeyFileName = "id_rsa"
-  convertValueToFile(userPublicKey, pubKeyFileName)
   sh "rm -f id_rsa"
+  convertValueToFile(userPublicKey, pubKeyFileName)
   sh "docker run --rm -v \$(pwd)/${playbookFileName}:/ansible/${playbookFileName} -v \$(pwd)/${hostsFileName}:/ansible/${hostsFileName} -v ${pubKeyFileName}:/root/.ssh/id_rsa:ro --workdir=/ansible ${ansibleImage} -i ${hostsFileName} ${playbookFileName}"
 
 
