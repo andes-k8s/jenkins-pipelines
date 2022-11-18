@@ -20,11 +20,11 @@ def call(body) {
   // sh "rm -Rf id_rsa"
   // sh "rm -Rf playbook.yml"
   // sh "rm -Rf inventory.ini"
-  def playbookFileName = createFileFrom(config.playbook, config.playbookFile, config.playbookFromParams, "playbook.yml", params)
-  def hostsFileName = createFileFrom(config.hosts, config.hostFile, config.hostsFromParams, "inventory.ini", params)
-  def userPrivateKey = getFromValueOrParams(config.userPrivateKey, config.userPrivateKeyFromParams)
-  def privKeyFileName = "id_rsa"
-  convertValueToFile(userPrivateKey, privKeyFileName)
+  // def playbookFileName = createFileFrom(config.playbook, config.playbookFile, config.playbookFromParams, "playbook.yml", params)
+  // def hostsFileName = createFileFrom(config.hosts, config.hostFile, config.hostsFromParams, "inventory.ini", params)
+  // def userPrivateKey = getFromValueOrParams(config.userPrivateKey, config.userPrivateKeyFromParams)
+  // def privKeyFileName = "id_rsa"
+  // convertValueToFile(userPrivateKey, privKeyFileName)
   sh "ls -lah"
   // sh "docker run --rm -v \$(pwd)/${playbookFileName}:/app/${playbookFileName} -v \$(pwd)/${hostsFileName}:/app/${hostsFileName} -v \$(pwd)/${privKeyFileName}:/root/.ssh/id_rsa ${ansibleImage} -i ${hostsFileName} /app/${playbookFileName}"
 
