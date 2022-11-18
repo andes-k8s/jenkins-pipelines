@@ -12,7 +12,7 @@ pipeline {
           script {
             node{
               runAnsible{
-                playbookFile = "playbook.yml"
+                playbookFileName = "playbook.yml"
                 hostsFromParams = "HOSTS"
                 userPrivateKeyFromParams = "ID_RSA"
               }
