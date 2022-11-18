@@ -33,6 +33,7 @@ def call(body) {
   sh "rm -Rf id_rsa"
   sh "rm -Rf playbook.yml"
   sh "rm -Rf inventory.ini"
+  sh "rm -Rf ../clean-k8s-logs"
 
 }
 
