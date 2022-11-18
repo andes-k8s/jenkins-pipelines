@@ -17,7 +17,6 @@ def call(body) {
   }
 
   sh "ls -lah"
-  sh "ls playbook.yml"
   // sh "rm -Rf id_rsa"
   // sh "rm -Rf playbook.yml"
   // sh "rm -Rf inventory.ini"
@@ -27,10 +26,7 @@ def call(body) {
   def privKeyFileName = "id_rsa"
   convertValueToFile(userPrivateKey, privKeyFileName)
   sh "ls -lah"
-  // sh "rm -Rf id_rsa"
-  // sh "rm -Rf playbook.yml"
-  // sh "rm -Rf inventory.ini"
-  sh "docker run --rm -v \$(pwd)/${playbookFileName}:/app/${playbookFileName} -v \$(pwd)/${hostsFileName}:/app/${hostsFileName} -v \$(pwd)/${privKeyFileName}:/root/.ssh/id_rsa ${ansibleImage} -i ${hostsFileName} /app/${playbookFileName}"
+  // sh "docker run --rm -v \$(pwd)/${playbookFileName}:/app/${playbookFileName} -v \$(pwd)/${hostsFileName}:/app/${hostsFileName} -v \$(pwd)/${privKeyFileName}:/root/.ssh/id_rsa ${ansibleImage} -i ${hostsFileName} /app/${playbookFileName}"
 
   sh "rm -Rf id_rsa"
   sh "rm -Rf playbook.yml"
