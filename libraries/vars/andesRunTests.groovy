@@ -13,8 +13,9 @@ def call(body) {
   // run test 
   def testsStages = [:]
   for(def i=1; i<4; i++) {
+    def currentValue = i
     testsStages[i] = {
-      echo "running in parallel ${i}"
+      echo "running in parallel ${currentValue}"
       sh "docker ps -a"
     }
   }
