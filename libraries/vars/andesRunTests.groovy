@@ -22,17 +22,18 @@ def call(body) {
     // npm ci 
     // compose up 
     // run test 
-    def checkoutResponse = checkout([
-        $class: 'GitSCM',
-        branches: [[name:  branch ]],
-        userRemoteConfigs: [[ url: repoUrl]]
-    ])
-    sh "ls -lah"
     def testsStages = [:]
     for(def i=1; i<5; i++) {
       def currentValue = i
       testsStages[i] = {
         node {
+          def checkoutResponse = checkout([
+              $class: 'GitSCM',
+              branches: [[name:  branch ]],
+              userRemoteConfigs: [[ url: repoUrl]]
+          ])
+          sh "ls -lah"
+          sh "ls -lah docker"
           sh "API=$dockerApiTag APP=$dockerAppTag docker-compose -p andes-${currentValue}-${BUILD_NUMBER} -f docker/docker-compose.yml up -d"
           sh 'sleep 10'
           // run tests 
