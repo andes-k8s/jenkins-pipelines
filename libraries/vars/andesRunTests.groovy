@@ -32,7 +32,7 @@ def call(body) {
       def currentValue = i
       testsStages[i] = {
         node {
-          sh 'API=$dockerApiTag APP=$dockerAppTag docker-compose -p andes-${currentValue}-${BUILD_NUMBER} -f docker/docker-compose.yml up -d'
+          sh "API=$dockerApiTag APP=$dockerAppTag docker-compose -p andes-${currentValue}-${BUILD_NUMBER} -f docker/docker-compose.yml up -d"
           sh 'sleep 10'
           // run tests 
 
