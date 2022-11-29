@@ -13,10 +13,8 @@ pipeline {
     stage('Build API') {
       steps {
         script {
-          node{
-            andesRunTests{
-              repoUrl = "https://github.com/andes/andes-test-integracion.git"
-            }
+          andesRunTests{
+            repoUrl = "https://github.com/andes/andes-test-integracion.git"
           }
         }
       }

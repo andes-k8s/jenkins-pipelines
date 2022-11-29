@@ -26,7 +26,7 @@ def call(body) {
     for(def i=1; i<5; i++) {
       def currentValue = i
       testsStages[i] = {
-        node {
+        container("docker") {
           def checkoutResponse = checkout([
               $class: 'GitSCM',
               branches: [[name:  branch ]],
@@ -40,6 +40,8 @@ def call(body) {
 
           echo "running in parallel ${currentValue}"
           sh "docker ps -a"
+          sh 'MONGO_URI="mongodb://db:27017/andes" node scripts/seeder.js'
+          sh 'npx cypress run --browser chrome --tag $tag ${filefilter} --env MONGO_URI="mongodb://db:27017/andes",API_SERVER="http://nginx"${filefilter} --config baseUrl=http://nginx,video=${video},numTestsKeptInMemory=1,trashAssetsBeforeRuns=false --record --key d6b64714-ccf9-4fc9-959c-5923d23f2a06 ${cypressparams} --parallel || true'
           sh "docker-compose -f docker/docker-compose.yml down"
         }
       }
