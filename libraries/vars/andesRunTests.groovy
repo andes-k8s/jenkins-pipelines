@@ -27,6 +27,7 @@ def call(body) {
         branches: [[name:  branch ]],
         userRemoteConfigs: [[ url: repoUrl]]
     ])
+    sh "ls -lah"
     def testsStages = [:]
     for(def i=1; i<5; i++) {
       def currentValue = i
