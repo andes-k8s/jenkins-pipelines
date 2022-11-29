@@ -34,7 +34,7 @@ def call(body) {
           ])
           sh "ls -lah"
           sh "ls -lah docker"
-          sh "API=$dockerApiTag APP=$dockerAppTag docker-compose -p andes-${currentValue}-${BUILD_NUMBER} -f docker/docker-compose.yml up -d"
+          sh "API=${dockerApiTag} APP=${dockerAppTag} docker-compose -p andes-${BUILD_NUMBER}-${currentValue} -f docker/docker-compose.yml up -d"
           sh 'sleep 10'
           // run tests 
 
