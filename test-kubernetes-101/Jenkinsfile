@@ -15,6 +15,7 @@ pipeline {
         script {
           node{
             andesRunTests{
+              repoUrl = "https://github.com/andes/andes-test-integracion.git"
             }
           }
         }
