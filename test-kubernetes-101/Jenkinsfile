@@ -6,46 +6,16 @@ pipeline {
   agent {
     kubernetes {
       inheritFrom 'kube-agent'
-      yaml '''
-      spec:
-        containers:
-        - name: docker
-          image: docker:19.03.1
-          command:
-            - sleep
-          args:
-            - 99d
-          volumeMounts:
-            - name: dockersock
-              mountPath: "/var/run/docker.sock"
-        volumes:
-        - name: dockersock
-          hostPath:
-            path: /var/run/docker.sock
-'''
+      yamlFile '../agent-kubernetes/dockerPod.yaml'
     }
   }
   stages {
     stage('Build API') {
       steps {
-        container('docker') {
-          script {
-            andesBuildDocker(
-              repoUrl: "https://github.com/hospitalneuquen/turnero-core.git",
-              branch: "master",
-              imageName: API_IMAGE_NAME,
-              dockerFile: "./api/Dockerfile",
-              pushToDockerRegistry: true,
-              registryCredential: registryCredential
-            )
-            andesBuildDocker(
-              repoUrl: "https://github.com/hospitalneuquen/turnero-core.git",
-              branch: "master",
-              imageName: APP_IMAGE_NAME,
-              dockerFile: "./app/Dockerfile",
-              pushToDockerRegistry: true,
-              registryCredential: registryCredential
-            )
+        script {
+          node{
+            andesRunTests{
+            }
           }
         }
       }
