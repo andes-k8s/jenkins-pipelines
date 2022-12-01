@@ -14,21 +14,19 @@ pipeline {
       steps {
           script {
             node{
-              parallel {
-                andesBuildDocker{
-                  repoUrl = "https://github.com/andes/iac.git"
-                  branch = GIT_BRANCH
-                  pushToDockerRegistry = true
-                  registryCredential = "dockerhub"
-                  dockerFileFolder = "./docker-images/ansible-runner"
-                }
-                andesBuildDocker{
-                  repoUrl = "https://github.com/andes/iac.git"
-                  branch = GIT_BRANCH
-                  pushToDockerRegistry = true
-                  registryCredential = "dockerhub"
-                  dockerFileFolder = "./docker-images/jenkins-docker"
-                }
+              andesBuildDocker{
+                repoUrl = "https://github.com/andes/iac.git"
+                branch = GIT_BRANCH
+                pushToDockerRegistry = true
+                registryCredential = "dockerhub"
+                dockerFileFolder = "./docker-images/ansible-runner"
+              }
+              andesBuildDocker{
+                repoUrl = "https://github.com/andes/iac.git"
+                branch = GIT_BRANCH
+                pushToDockerRegistry = true
+                registryCredential = "dockerhub"
+                dockerFileFolder = "./docker-images/jenkins-docker"
               }
             }
           }
