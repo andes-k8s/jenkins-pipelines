@@ -1,7 +1,7 @@
 spec:
   containers:
   - name: docker
-    image: andesnqn/jenkins-docker
+    image: andesnqn/jenkins-docker:master
     command:
       - sleep
     args:
