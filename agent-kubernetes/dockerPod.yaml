@@ -3,7 +3,7 @@ spec:
   - name: docker
     image: docker:19.03.1
     command:
-      - apk add --no-cache docker-compose && sleep
+      - sh -c "apk add --no-cache docker-compose && sleep"
     args:
       - 99d
     volumeMounts:
